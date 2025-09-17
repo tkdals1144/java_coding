@@ -1,0 +1,28 @@
+package math;
+
+import java.util.*;
+import java.io.*;
+
+public class SequenceNum {
+	public static void main(String[] args) throws IOException {
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(bf.readLine());
+		int count = 0;
+		
+		// 234 246 210
+		if (N <= 99) System.out.println(N);
+		else {
+			int a = N / 100;
+			int b = (N % 100) / 10;
+			int c = N % 10;
+			for (int i = 100; i <= N; i++) {
+				if ((a - b) == (b - c)) {
+					count++;
+					System.out.println(count);
+				}
+			}
+			count += 99;
+			System.out.println(count);
+		}
+	}
+}

@@ -1,0 +1,38 @@
+package math;
+
+import java.util.*;
+import java.io.*;
+
+public class Average {
+	public static void main(String[] args) throws IOException {
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer("");
+		StringBuilder sb = new StringBuilder();
+		int C = Integer.parseInt(bf.readLine());
+		int score;
+		int count;
+		double sum;
+		
+		for (int i = 0; i < C; i++) {
+			st = new StringTokenizer(bf.readLine());
+			int N = Integer.parseInt(st.nextToken());
+			int[] students = new int[N];
+			sum = 0;
+			count = 0;
+			for (int j = 0; j < N; j++) {
+				score = Integer.parseInt(st.nextToken());
+				students[j] = score;
+				sum += score;
+			}
+			for (int j = 0; j < N; j++) {
+				System.out.println("느금마 개새끼야" + students[j]);
+				System.out.println("애미없는 개새끼가" + (int) (sum/N));
+				if (students[j] > (int)(sum / N)) count++;
+			}
+			System.out.println((count / N));
+			sb.append(String.format("%.3f", (double)(count / N))).append("%\n");
+		}
+		
+		System.out.println(sb.toString());
+	}
+}
