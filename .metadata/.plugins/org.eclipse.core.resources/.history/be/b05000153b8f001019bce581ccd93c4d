@@ -1,0 +1,15 @@
+package Studying;
+
+import java.util.*;
+import java.io.*;
+
+public class Study05 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		
+		int n = Integer.parseInt(bf.readLine());
+		
+		
+	}
+}

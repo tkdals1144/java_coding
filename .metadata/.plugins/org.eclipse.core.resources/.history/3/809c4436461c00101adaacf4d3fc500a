@@ -1,0 +1,31 @@
+package Studying;
+
+public class Study02 {
+	public static void main(String[] args) {
+		Child child = new Child();
+	}
+}
+
+class Parent {
+	int x = 25;
+	Parent() {
+		this(5);
+		System.out.println("Parent default");
+	}
+	
+	Parent(int x) {
+		System.out.println("Parent: " + x);
+	}
+}
+
+class Child extends Parent {
+	int x = 10;
+	Child() {
+//		super();
+		this.display();
+		System.out.println("Child default");
+	}
+	void display() {
+		System.out.println(x);
+	}
+}

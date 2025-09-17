@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\Users\Lenovo\OneDrive\πŸ≈¡ »≠∏È\java_workspace\.metadata\.plugins\org.eclipse.jdt.core
+4280632901.index
+1215500332.index
+1865797976.index

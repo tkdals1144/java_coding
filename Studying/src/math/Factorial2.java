@@ -1,0 +1,19 @@
+package math;
+
+import java.io.*;
+import java.math.*;
+
+public class Factorial2 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		String strNum = bf.readLine();
+		int N = Integer.parseInt(strNum);
+		BigInteger bigNum = new BigInteger(strNum);
+		
+		for (int i = 1; i < N; i++) {
+			bigNum = bigNum.multiply(BigInteger.valueOf(N-i));
+		}
+		
+		System.out.println(bigNum);
+	}
+}

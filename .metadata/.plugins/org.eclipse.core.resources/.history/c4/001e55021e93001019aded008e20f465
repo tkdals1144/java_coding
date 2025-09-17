@@ -1,0 +1,86 @@
+package Studying;
+
+import java.util.*;
+import java.io.*;
+
+public class DFS_BFS {
+	
+	static int N;
+	static int M;
+	static int V;
+	
+	static ArrayList<Integer>[] graph;
+	
+	public static String BFS(int V) {
+		StringBuilder sb = new StringBuilder();
+		boolean[] visited = new boolean[N+1];
+		visited[V] = true;
+		Queue<Integer> q = new LinkedList<>();
+		q.offer(V);
+		
+		while (!q.isEmpty()) {
+			int v = q.poll();
+			sb.append(v + " ");
+			
+			for (int next : graph[v]) {
+				if (!visited[next]) {
+					visited[next] = true;
+					sb.append(v + " ");
+					q.offer(next);
+				}
+			}
+		}
+		
+		return sb.toString();
+	}
+	
+	public static void DFS(int V) {
+		boolean[] visited = new boolean[V+1];
+		visited[V] = true;
+		System.out.print(V + " ");
+		for (int next : graph[V]) {
+			if (!visited[next]) {
+				DFS(next);
+			}
+		}
+		
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(bf.readLine());
+		
+		// 정점의 개수 N
+		N = Integer.parseInt(st.nextToken());
+		// 간선의 개수 M
+		M = Integer.parseInt(st.nextToken());
+		// 탐색 시장 정점
+		V = Integer.parseInt(st.nextToken());
+		
+		// 각 정점 N개를 입력
+		graph = new ArrayList[N+1];
+		
+		// 각 정점 N개에 대해 간선끼리 연결 가능한 ArrayList로 초기화
+		for (int i = 1; i <= N; i++) {
+			graph[i] = new ArrayList<>();
+		}
+
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(bf.readLine());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			
+			// 간선을 통해 정점끼리 연결
+			graph[a].add(b);
+			graph[b].add(a);
+		}
+		
+		for (int i = 1; i <= N; i++) {
+			Collections.sort(graph[i]);
+		}
+		DFS(V);
+		System.out.println();
+		String bfs = BFS(V);
+		System.out.println(bfs);
+	}
+}
