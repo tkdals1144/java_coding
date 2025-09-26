@@ -1,0 +1,104 @@
+package Studying;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+public class Heap {
+	
+	static int[] sort(int[] heap, int i) {	
+		while(true) {
+			if (i == 0) break;
+			if (heap[i] < heap[(i-1)/2]) {
+				int swap = heap[i];
+				heap[i] = heap[(i-1)/2];
+				heap[(i-1)/2] = swap;
+				i = (i-1)/2;
+			} else {
+				break;
+			}
+		}
+		return heap;
+	}
+	
+	static int[] sort2(int[] heap, int i) {
+		// 힙의 최소값을 마지막 값으로 덮어씌움
+		heap[0] = heap[i-1];
+		
+		int start = 0;
+		
+		// 다음 인자와 다다음 인자와 비교를 가능한만큼 반복
+		while (true) {
+			// 비교대상이 더 없다면
+			if ((start * 2) + 1 >= index ) break;
+			// 비교대상이 하나밖에 없는 상황이라면
+			else if ((start * 2) + 2 == index) {
+				if (heap[start] > heap[index-1]) {
+					int swap = heap[start];
+					heap[start] = heap[index-1];
+					heap[index-1] = swap;
+				}
+				break;
+			} else {
+				// 더 작은것과 비교해야만 최소힙이 깨지지 않는다.
+				if (heap[start*2+1] < heap[start*2+2]) {
+					if (heap[start*2+1] < heap[start]) {
+						int swap = heap[start*2+1];
+						heap[start*2+1] = heap[start];
+						heap[start] = swap;
+						start = start*2+1;
+					} else {
+						break;
+					}
+				}
+				else {
+					if (heap[start*2+2] < heap[start]) {
+						int swap = heap[start*2+2];
+						heap[start*2+2] = heap[start];
+						heap[start] = swap;
+						start = start*2+2;
+					} else {
+						break;
+					}
+				}
+			}
+			break;
+		}
+		return heap;
+	}
+	
+	// 현재 인자의 개수
+	static int index;
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		
+		int N = Integer.parseInt(bf.readLine());
+		int[] heap = new int[10];
+		
+		for (int i = 0; i < N; i++) {
+			int num = Integer.parseInt(bf.readLine());
+			if (num == 0) {
+				if (index == 0) {
+					sb.append('0').append('\n');
+					continue;
+				}
+				sb.append(heap[0]).append('\n');
+				heap = sort2(heap, index);
+				index--;
+			} else {
+				if (heap.length == index) {
+					heap = Arrays.copyOf(heap, heap.length * 2);
+				}
+				heap[index] = num;
+				heap = sort(heap, index);
+				index++;
+			}
+		}
+		
+		System.out.println(sb.toString());
+	}
+}
+
