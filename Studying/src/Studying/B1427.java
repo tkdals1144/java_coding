@@ -1,0 +1,27 @@
+package Studying;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class B1427 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		String N = bf.readLine();
+		ArrayList<Character> arr = new ArrayList<>();
+		
+		for (char a : N.toCharArray()) {
+			arr.add(a);
+		}
+		Collections.sort(arr, (o1, o2) -> o2 - o1);
+		
+		for (char a : arr) {
+			sb.append(a);
+		}
+		
+		System.out.println(sb.toString());
+	}
+}
