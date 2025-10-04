@@ -1,0 +1,34 @@
+package Studying;
+
+import java.io.*;
+import java.util.HashSet;
+import java.util.StringTokenizer;
+
+public class B14425 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		int count = 0;
+		
+		HashSet<String> arrN = new HashSet<>();
+		String[] arrM = new String[M];
+		
+		for (int i = 0; i < N; i++) {
+			arrN.add(br.readLine());
+		}
+		for (int i = 0; i < M; i++) {
+			arrM[i] = br.readLine();
+		}
+		
+		for (String str : arrM) {
+			if (arrN.contains(str)) {
+				count++;
+			}
+		}
+		
+		System.out.println(count);
+	}
+}
