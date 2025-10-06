@@ -1,0 +1,28 @@
+package Studying;
+
+import java.util.*;
+import java.io.*;
+
+class B11478
+{
+	public static void main (String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String input = br.readLine();
+		char[] ch = input.toCharArray();
+		Set<String> set = new HashSet<>();
+		int count = 0;
+		String str = "";
+		for (int i=0; i < ch.length; i++) {
+			for (int j =i; j < ch.length; j++) {
+				str += ch[j];
+				set.add(str);
+			}
+			str = "";
+		}
+		for (String str1 : set) {
+			count++;
+		}
+		System.out.println(count);
+	}
+}
