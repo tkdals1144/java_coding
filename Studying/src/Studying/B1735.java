@@ -1,0 +1,37 @@
+package Studying;
+
+import java.util.*;
+import java.io.*;
+
+public class B1735 {
+	
+	static long gcd(long a, long b) {
+		while (b != 0) {
+			long temp = b;
+			b = a % b;
+			a = temp;
+		}
+		return a;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		long a = Long.parseLong(st.nextToken());
+		long b = Long.parseLong(st.nextToken());
+		long gcdAB = gcd(a, b);
+		a /= gcdAB;
+		b /= gcdAB;
+		st = new StringTokenizer(br.readLine());
+		long c = Long.parseLong(st.nextToken());
+		long d = Long.parseLong(st.nextToken());
+		long gcdCD = gcd(c, d);
+		c /= gcdCD;
+		d /= gcdCD;
+		long num = b * d / gcd(b, d);
+		long top = (a * num / b) + (c * num / d);
+		long gcdFinal = gcd(num, top);
+		sb.append(top / gcdFinal).append(" ").append(num / gcdFinal);
+		System.out.println(sb.toString());
+	}
+}
