@@ -1,0 +1,25 @@
+package Studying;
+import java.util.*;
+import java.io.*;
+
+public class B4134 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		long N = Long.parseLong(br.readLine());
+		
+		boolean[] numArr = new boolean[100000];
+		Arrays.fill(numArr, true);
+		numArr[0] = false;
+		numArr[1] = true;
+		numArr[2] = true;
+		
+		for (int i = 2; i < numArr.length; i++) {
+			if (numArr[i]) {
+				for (int j = i; i*j < numArr.length; j++) {
+					numArr[i*j] = false;
+				}
+			}
+		}
+		System.out.println(numArr[5]);
+	}
+}
