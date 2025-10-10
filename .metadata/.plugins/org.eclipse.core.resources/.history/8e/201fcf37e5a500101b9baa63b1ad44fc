@@ -1,0 +1,28 @@
+package Studying;
+
+import java.util.Scanner;
+
+public class B24267 {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		long n = sc.nextLong();
+		// 1 ~ (n-2)
+		// i+1 ~ (n-1)
+		// j+1 ~ n
+		long count = 0;
+		for (int i = 1; i <= n-2; i++) {
+			for (int j = i + 1; j <= n-1; j++) {
+				for (int k = j + 1; k <= n; k++) {
+					count++;
+				}
+			}
+		}
+		System.out.println(count);
+	}
+}
+
+// 5 -> 10
+// 6 -> 20
+// 7 -> 35
+// 8 -> 
