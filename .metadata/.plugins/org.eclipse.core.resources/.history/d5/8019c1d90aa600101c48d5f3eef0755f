@@ -1,0 +1,42 @@
+package Studying;
+import java.util.*;
+import java.io.*;
+
+public class B12789 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		Stack<Integer> stack1 = new Stack<>();
+		Stack<Integer> stack2 = new Stack<>();
+		int index = 1;
+		boolean check = true;
+		
+		for (int i = 0 ; i < N; i++) {
+			stack1.add(Integer.parseInt(st.nextToken()));
+		}
+		
+		while (index < N+1) {
+			if (stack1.peek() == index || stack2.peek() == index) {
+				if (stack1.peek() == index) {
+					stack1.pop();
+					index++;
+				} else {
+					stack2.pop();
+					index++;
+				}
+			} else {
+				if (stack1.empty()) {
+					check = false;
+					break;
+				} else {
+					stack2.add(stack1.pop());
+				}
+			}
+		}
+		
+		if (check) System.out.println("Nice");
+		else System.out.println("Sad");
+	}
+}
