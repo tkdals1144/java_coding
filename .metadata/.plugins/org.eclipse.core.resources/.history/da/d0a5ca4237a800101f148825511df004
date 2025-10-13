@@ -10,24 +10,28 @@ public class B2346 {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		StringBuilder sb = new StringBuilder();
 		
-		Deque<int[]> deque = new ArrayDeque<>();
+		Deque<Integer> deque = new LinkedList<>();
+		int index = 1;
 		
-		for (int i = 1; i <= N; i++) {
-			deque.offer(new int[] {i, Integer.parseInt(st.nextToken())});
+		for (int i = 0; i < N; i++) {
+			deque.offer(Integer.parseInt(st.nextToken()));
 		}
 		
 		while (!deque.isEmpty()) {
-			int[] item = deque.pollFirst();
-			sb.append(item[0]).append(" ");
-			int n = item[1];
+			sb.append(index).append(" ");
+			int n = deque.poll();
+			System.out.println(n);
+			index += n;
+			if (index > N) index -= N;
+			else if (index < 1) index += N;
 			if (deque.isEmpty()) break;
 			if (n > 0) {
-				for (int i = 0; i < n - 1; i++) {
+				for (int i = 1; i < n; i++) {
 					deque.offerLast(deque.pollFirst());
 				}
 			}
 			else {
-				for (int i = 0; i < Math.abs(n); i++) {
+				for (int i = -1; i > n; i--) {
 					deque.offerFirst(deque.pollLast());
 				}
 			}

@@ -10,7 +10,7 @@ public class B2346 {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		StringBuilder sb = new StringBuilder();
 		
-		Deque<int[]> deque = new ArrayDeque<>();
+		Deque<int[]> deque = new LinkedList<>();
 		
 		for (int i = 1; i <= N; i++) {
 			deque.offer(new int[] {i, Integer.parseInt(st.nextToken())});
