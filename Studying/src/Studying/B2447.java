@@ -1,0 +1,44 @@
+package Studying;
+import java.util.*;
+import java.io.*;
+
+public class B2447 {
+	static boolean[][] graph;
+	
+	// t는 깊이
+	static void func(int N, int k, int l) {
+		if (N != 1) {
+			for (int i = k + N/3; i < k + N/3 + N/3; i++) {
+				for (int j = l + N/3; j < l + N/3 + N/3; j++) {
+					graph[i][j] = false;
+				}
+			}
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3; j++) {
+					func(N/3, k + i * N/3, l + j * N/3);
+				}
+			}
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		graph = new boolean[N][N];
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				graph[i][j] = true;
+			}
+		}
+		func(N, 0, 0);
+		
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (graph[i][j]) sb.append("*");
+				else sb.append(" ");
+			}
+			sb.append('\n');
+		}
+		System.out.println(sb.toString());
+	}
+}
