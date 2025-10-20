@@ -1,0 +1,62 @@
+package Studying;
+import java.util.*;
+import java.io.*;
+
+public class B2178 {
+	// 방향벡터 dxdy
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	// 방문한 노드의 행동횟수 그래프
+	static int[][] visited;
+	// 처음 미로 그래프
+	static char[][] graph;
+	// 그래프 크기 N x M
+	static int N;
+	static int M;
+	
+	// bfs 알고리즘 진행
+	static void bfs() {
+		// 시작지점 (0, 0) -> 1 누적
+		visited[0][0] = 1;
+		// bfs의 핵심인 큐 구현
+		Deque<int[]> deque = new ArrayDeque<>();
+		// 큐에 시작노드 값 주입 (0, 0)
+		deque.offerLast(new int[] {0, 0});
+		
+		// 도착지점의 행동횟수가 추가되면 종료되도록 코딩
+		// 혹시 종료지점에 도달할 수 없는 경우도 존재하다면 !deque.isEmpty()로 조건 설정하는것이 이상적 
+		while (visited[N-1][M-1] == 0) {
+			// deque에서 현재 좌표값 추출
+			int[] arr = deque.pollFirst();
+			int x = arr[0];
+			int y = arr[1];
+			// 방향벡터 4방향을 1중 반복문으로 구현
+			for (int i = 0; i < 4; i++) {
+				// 현재 위치로부터 이동 ddx, ddy
+				int ddx = dx[i] + x;
+				int ddy = dy[i] + y;
+				if (0 <= ddx && 0 <= ddy && ddx < N && ddy < M && visited[ddx][ddy] == 0 && graph[ddx][ddy] == '1') {
+					// 4방향 중 이동 가능하다면 그것을 큐에 추가
+					// 점점 퍼져나가는 bfs를 구현하기 위한 핵심 로직
+					deque.offerLast(new int[] {ddx, ddy});
+					// 이전 위치의 행동횟수에서 하나를 더한 행동횟수를 저장
+					visited[ddx][ddy] = visited[x][y] + 1;
+				}
+			}
+		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		graph = new char[N][M];
+		for (int i = 0; i < graph.length; i++) {
+			graph[i] = br.readLine().toCharArray();
+		}
+		visited = new int[N][M];
+		bfs();
+		System.out.println(visited[N-1][M-1]);
+	}
+}

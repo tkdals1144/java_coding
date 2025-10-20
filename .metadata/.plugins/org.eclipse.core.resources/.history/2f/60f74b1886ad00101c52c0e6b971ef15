@@ -1,0 +1,50 @@
+package Studying;
+import java.util.*;
+import java.io.*;
+
+public class B2178 {
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	static int[][] visited;
+	static char[][] graph;
+	static int N;
+	static int M;
+	
+	static void bfs() {
+		visited[0][0] = 1;
+		Deque<int[]> deque = new ArrayDeque<>();
+		deque.offerLast(new int[] {0, 0});
+		while (visited[N-1][M-1] == 0) {
+			int[] arr = deque.pollFirst();
+			int x = arr[0];
+			int y = arr[1];
+			for (int i = 0; i < 4; i++) {
+				int ddx = dx[i] + x;
+				int ddy = dy[i] + y;
+				if (0 <= ddx && 0 <= ddy && ddx < N && ddy < M && visited[ddx][ddy] == 0 && graph[ddx][ddy] == '1') {
+					int[] dxdy = new int[2];
+					dxdy[0] = ddx;
+					dxdy[1] = ddy;
+					deque.offerLast(dxdy);
+					visited[ddx][ddy] = visited[x][y] + 1;
+					System.out.println(11);
+				}
+			}
+		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		graph = new char[N][M];
+		for (int i = 0; i < graph.length; i++) {
+			graph[i] = br.readLine().toCharArray();
+		}
+		visited = new int[N][M];
+		bfs();
+		System.out.println(1);
+		System.out.println(visited[N-1][M-1]);
+	}
+}
