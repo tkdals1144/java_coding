@@ -1,0 +1,53 @@
+package Studying;
+import java.util.*;
+import java.io.*;
+
+public class B1697 {
+	static int N;
+	static int K;
+	// 깊이를 저장할 그래프
+	static int[] graph = new int[100001];
+	static boolean[] visited = new boolean[100001];
+	
+	static void bfs(int N, int K) {
+		Deque<Integer> deque = new ArrayDeque<>();
+		// 첫번째 위치를 집어넣는 과정
+		deque.offerLast(N);
+		visited[N] = true;
+		while (!deque.isEmpty()) {
+			// 인자를 빼내는 과정
+			int loc = deque.pollFirst();
+			int loc1 = loc--;
+			if (0 <= loc1 && !visited[loc1]) {
+				graph[loc1] = graph[loc] + 1;
+				visited[loc1] = true;
+				if (loc1 == K) break; 
+				deque.offerLast(loc1);
+			}
+			int loc2 = loc++;
+			if (loc2 <= 100000 && !visited[loc2]) {
+				graph[loc2] = graph[loc] + 1;
+				visited[loc2] = true;
+				if (loc2 == K) break;
+				deque.offerLast(loc2);
+			}
+			int loc3 = loc * 2;
+			if (loc3 <= 100000 && !visited[loc3]) {
+				graph[loc3] = graph[loc] + 1;
+				visited[loc3] = true;
+				if (loc3 == K) break;
+				deque.offerLast(loc3);
+			}
+		}
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		bfs(N, K);
+		System.out.println(graph[K]);
+	}
+}
