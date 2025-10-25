@@ -1,0 +1,90 @@
+package Studying;
+import java.util.*;
+import java.io.*;
+
+public class B14502 {
+	static int N;
+	static int M;
+	// 최대 안전구역
+	static int max = 0;
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	// 기반 그래프
+	static int[][] graph;
+	// 실험 그래프
+	static int[][] graph2;
+	// 3개 선택
+	static ArrayList<int[]> blanks = new ArrayList<>();
+	
+	static int bfs(int[][] selected) {
+		graph2 = new int[N][M];
+		for (int i = 0; i < N; i++) {
+			graph2[i] = graph[i].clone();
+		}
+		
+		for (int[] w : selected) {
+			graph2[w[0]][w[1]] = 1;
+		}
+		
+		Deque<int[]> deque = new ArrayDeque<>();
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (graph2[i][j] == 2) deque.offerLast(new int[] {i, j});
+			}
+		}
+		
+		while (!deque.isEmpty()) {
+			int[] xy = deque.pollFirst();
+			for (int i = 0; i < 4; i++) {
+				int nx = xy[0] + dx[i];
+				int ny = xy[1] + dy[i];
+				if (0 <= nx && 0 <= ny && nx < N && ny < M && graph2[nx][ny] == 0) {
+					graph2[nx][ny] = 2;
+					deque.offerLast(new int[] {nx, ny});
+				}
+			}
+		}
+		
+		int safe = 0;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (graph2[i][j] == 0) safe++;
+			}
+		}
+		
+		return safe;
+	}
+	
+	static void combination(int start, int depth, int[][] selected) {
+		if (depth == 3) {
+			int safe = bfs(selected);
+			if (safe > max) max = safe;
+			return;
+		}
+		
+		for (int i = start; i < blanks.size(); i++) {
+			selected[depth] = blanks.get(i);
+			combination(i + 1, depth + 1, selected);
+		}
+	}
+
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		graph = new int[N][M];
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < M; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+				if (graph[i][j] == 0) blanks.add(new int[] {i, j});
+			}
+		}
+		
+		combination(0, 0, new int[3][]);
+		
+		System.out.println(max);
+	}
+}
