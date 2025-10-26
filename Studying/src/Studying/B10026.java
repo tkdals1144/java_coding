@@ -1,0 +1,66 @@
+package Studying;
+import java.util.*;
+import java.io.*;
+
+public class B10026 {
+	static int N;
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	static boolean[][] visited;
+	// 정상 그래프 (Null : 0, R : 1, G : 2, B : 3)
+	static int[][] graph1;
+	// 적록색약 그래프 (Null : 0, RG : 1, B : 2)
+	static int[][] graph2;
+	
+	static int bfs(int[][] graph) {
+		visited = new boolean[N][N];
+		int count = 0;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (!visited[i][j]) {
+					count++;
+					Deque<int[]> deque = new ArrayDeque<>();
+					deque.offerLast(new int[] {i, j, graph[i][j]});
+					visited[i][j] = true;
+					while (!deque.isEmpty()) {
+						int[] xyV = deque.pollFirst();
+						for (int k = 0; k < 4; k++) {
+							int nx = xyV[0] + dx[k];
+							int ny = xyV[1] + dy[k];
+							if (0 <= nx && 0 <= ny && nx < N && ny < N && !visited[nx][ny] && graph[nx][ny] == xyV[2]) {
+								deque.offerLast(new int[] {nx, ny, graph[nx][ny]});
+								visited[nx][ny] = true;
+							}
+						}
+					}
+				}
+			}
+		}
+		return count;
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		N = Integer.parseInt(br.readLine());
+		graph1 = new int[N][N];
+		graph2 = new int[N][N];
+		for (int i = 0; i < N; i++) {
+			char[] input = br.readLine().toCharArray();
+			for (int j = 0; j < N; j++) {
+				if (input[j] == 'R') {
+					graph1[i][j] = 1;
+					graph2[i][j] = 1;
+				} else if (input[j] == 'G') {
+					graph1[i][j] = 2;
+					graph2[i][j] = 1;
+				} else if (input[j] == 'B') {
+					graph1[i][j] = 3;
+					graph2[i][j] = 2;
+				}
+			}
+		}
+		
+		System.out.println(bfs(graph1) + " " + bfs(graph2));
+	}
+}
