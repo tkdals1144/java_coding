@@ -1,0 +1,95 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B2206 {
+	static int N;
+	static int M;
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	// 이동횟수 저장 그래프
+	static int[][] graphStart;
+	static int[][] graphEnd;
+	// 벽 유무
+	static char[][] graph2;
+	static void bfs1() {
+		graphStart[0][0] = 1;
+		Deque<int[]> deque = new ArrayDeque<>();
+		deque.offerLast(new int[] {0, 0});
+		while (!deque.isEmpty()) {
+			int[] xy = deque.pollFirst();
+			for (int i = 0; i < 4; i++) {
+				int nx = xy[0] + dx[i];
+				int ny = xy[1] + dy[i];
+				if (0 <= nx && 0 <= ny && nx < N && ny < M && graphStart[nx][ny] == 0 && graph2[nx][ny] == '0') {
+					graphStart[nx][ny] = graphStart[xy[0]][xy[1]] + 1;
+					deque.offerLast(new int[] {nx, ny});
+				}
+			}
+		}
+	}
+	static void bfs2() {
+		graphEnd[N-1][M-1] = 1;
+		Deque<int[]> deque = new ArrayDeque<>();
+		deque.offerLast(new int[] {N-1, M-1});
+		while (!deque.isEmpty()) {
+			int[] xy = deque.pollFirst();
+			for (int i = 0; i < 4; i++) {
+				int nx = xy[0] + dx[i];
+				int ny = xy[1] + dy[i];
+				if (0 <= nx && 0 <= ny && nx < N && ny < M && graphEnd[nx][ny] == 0 && graph2[nx][ny] == '0') {
+					graphEnd[nx][ny] = graphEnd[xy[0]][xy[1]] + 1;
+					deque.offerLast(new int[] {nx, ny});
+				}
+			}
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		graphStart = new int[N][M];
+		graphEnd = new int[N][M];
+		graph2 = new char[N][M];
+		for (int i = 0; i < N; i++) {
+			char[] input = br.readLine().toCharArray();
+			for (int j = 0; j < M; j++) {
+				graph2[i][j] = input[j];
+			}
+		}
+		bfs1();
+		bfs2();
+		int value = graphStart[N-1][M-1];
+		if (value == 0) value = 100000000;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (graph2[i][j] == '1') {
+					if (0 <= i-1 && i+1 < N && graphStart[i-1][j] != 0 && graphStart[i+1][j] != 0) {
+						int count1 = graphStart[i-1][j] + graphEnd[i+1][j] + 1;
+						int count2 = graphEnd[i-1][j] + graphStart[i+1][j] + 1;
+						if (count1 < value) {
+							value = count1;
+						} else if (count2 < value) {
+							value = count2;
+						}
+					} else if (0 < j-1 && j+1 < M && graphStart[i][j-1] != 0 && graphStart[i][j+1] != 0) {
+						int count1 = graphStart[i][j-1] + graphEnd[i][j+1];
+						int count2 = graphEnd[i][j-1] + graphStart[i][j+1];
+						if (count1 < value) {
+							value = count1;
+						} else if (count2 < value) {
+							value = count2;
+						}
+					}
+				}
+			}
+		}
+		System.out.println(graphStart[0][0]);
+		System.out.println(graphEnd[0][2]);
+		if (value == 100000000) System.out.println(-1);
+		else {
+			System.out.println(value);
+		}
+	}
+}
