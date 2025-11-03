@@ -1,0 +1,40 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B13549 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int K = Integer.parseInt(st.nextToken());
+		int[] graph = new int[100001];
+		Arrays.fill(graph, -1);
+		graph[N] = 0;
+		Deque<Integer> deque = new ArrayDeque<>();
+		deque.offerLast(N);
+		while (!deque.isEmpty()) {
+			int num = deque.pollFirst();
+			if (num == K) break;
+			// -1 이동
+			int dx1 = num - 1;
+			if (0 <= dx1) {
+				deque.offerLast(dx1);
+				graph[dx1] = graph[num] + 1;
+			}
+			// +1 이동
+			int dx2 = num + 1;
+			if (dx2 <= 100000) {
+				deque.offerLast(dx2);
+				graph[dx2] = graph[num] + 1;
+			}
+			// *2 이동
+			int dx3 = num * 2;
+			if (dx3 <= 100000) {
+				deque.offerLast(dx3);
+				graph[dx3] = graph[num] + 1;
+			}
+		}
+		System.out.println(graph[K]);
+	}
+}

@@ -1,0 +1,80 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B1260 {
+	static int N, M, V;
+	static ArrayList<Integer>[] graph;
+	static boolean[] visited;
+	
+	static String bfs() {
+		StringBuilder sb = new StringBuilder();
+		Deque<Integer> deque = new ArrayDeque<>();
+		deque.offerLast(V);
+		visited[V] = true;
+		sb.append(V).append(" ");
+		while (!deque.isEmpty()) {
+			int num = deque.pollFirst();
+			for (int i : graph[num]) {
+				if (!visited[i]) {
+					deque.offerLast(i);
+					visited[i] = true;
+					sb.append(i).append(" ");
+				}
+			}
+		}
+		
+		return sb.toString();
+	}
+	
+	static String dfs() {
+		StringBuilder sb = new StringBuilder();
+		Deque<Integer> deque = new ArrayDeque<>();
+		deque.offerFirst(V);
+		visited[V] = true;
+		sb.append(V).append(" ");
+		
+		while (!deque.isEmpty()) {
+			int num = deque.pollFirst();
+			for (int i : graph[num]) {
+				if (!visited[i]) {
+					deque.offerFirst(i);
+					visited[i] = true;
+					sb.append(i).append(" ");
+				}
+			}
+		}
+
+		return sb.toString();
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		V = Integer.parseInt(st.nextToken());
+		
+		graph = new ArrayList[N+1];
+		visited = new boolean[N+1];
+		
+		for (int i = 0; i < graph.length; i++) {
+			graph[i] = new ArrayList<>();
+		}
+		
+		for (int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			graph[a].add(b);
+			graph[b].add(a);
+		}
+		for (int i = 0; i < graph.length; i++) {
+			Collections.sort(graph[i]);
+		}
+		String a1 = dfs();
+		System.out.println(a1);
+		String answer = bfs();
+		System.out.println(answer);
+	}
+}

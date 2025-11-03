@@ -1,0 +1,61 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B2644 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(br.readLine());
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		ArrayList<Integer>[] graph = new ArrayList[n+1];
+		int[] dist = new int[n+1];
+		Arrays.fill(dist, -1);
+		for (int i = 0; i < graph.length; i++) {
+			graph[i] = new ArrayList<>();
+		}
+		// 촌수는 부모일 경우에는 1촌을 더하고 형제자매의 경우 2촌을 더함
+		// 촌수를 계산해야 할 두명 a, b
+		int a = Integer.parseInt(st.nextToken());
+		int b = Integer.parseInt(st.nextToken());
+		int l = Integer.parseInt(br.readLine());
+		int count = 0;
+		// 첫번째 인자는 두번째 인자의 부모
+		// 즉 o1 > o2
+		// 결국 부모자식의 순서는 크게 중요치 않음. 그 관계가 1촌으로 엮이는것이 중점
+		for (int i = 0; i < l; i++) {
+			st = new StringTokenizer(br.readLine());
+			int o1 = Integer.parseInt(st.nextToken());
+			int o2 = Integer.parseInt(st.nextToken());
+			graph[o1].add(o2);
+			graph[o2].add(o1);
+		}
+		Deque<Integer> deque = new ArrayDeque<>();
+		deque.offerLast(a);
+		dist[a] = 0;
+		while (!deque.isEmpty()) {
+			int num = deque.pollFirst();
+			for (int i : graph[num]) {
+				// 방문한곳인지를 확인해야 한다.
+				if (dist[i] == -1) {
+					deque.offerLast(i);
+					dist[i] = dist[num] + 1;
+				}
+			}
+		}
+		// 다른 두 사람을 입력으로 받기 때문에 0이 나올수 없음
+		if (dist[b] == 0) {
+			System.out.println(-1);
+		} else {
+			System.out.println(dist[b]);
+		}
+	}
+}
+
+
+// 즉 n분 그래프네?
+//     1
+//  2     3
+//7 8 9
+
+//  4
+//5   6
