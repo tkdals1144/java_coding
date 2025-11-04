@@ -1,0 +1,35 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B16953 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int A = Integer.parseInt(st.nextToken());
+		int B = Integer.parseInt(st.nextToken());
+		Deque<Integer> deque = new ArrayDeque<>();
+		Map<Integer, Integer> map = new HashMap<>();
+		deque.offerLast(A);
+		map.put(A, 1);
+		while (!deque.isEmpty()) {
+			int num = deque.pollFirst();
+			if (num == B) break;
+			int dx1 = num * 2;
+			if (dx1 < 1000000001 && !map.containsKey(dx1)) {
+				map.put(dx1, map.get(num) + 1);
+				deque.offerLast(dx1);
+			}
+			long dx2 = (long)num * 10 + 1;
+			if (0 <= dx2 && dx2 < 1000000001 && !map.containsKey((int)dx2)) {
+				map.put((int)dx2, map.get(num) + 1);
+				deque.offerLast((int)dx2);
+			}
+		}
+		if (!map.containsKey(B)) {
+			System.out.println(-1);
+		} else {
+			System.out.println(map.get(B));
+		}
+	}
+}
