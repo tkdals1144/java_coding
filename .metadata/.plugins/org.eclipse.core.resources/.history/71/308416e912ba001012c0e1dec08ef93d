@@ -1,0 +1,84 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B16236 {
+	static int N;
+	static int[] dx = {0, -1, 1, 0};
+	static int[] dy = {1, 0, 0, -1};
+	static int[][] graph;
+	static boolean[][] visited;
+	// 아기상어의 위치 x, y
+	static int[] location = new int[2];
+	// 아기상어의 크기
+	static int size = 2;
+	// 먹은 물고기의 수
+	static int feed = 0;
+	// break코드
+	static boolean breakcode = true;
+	
+	static int bfs() {
+		int count = 0;
+		visited = new boolean[N][N];
+		// 뭘 넣어야 할까? -> dx, dy
+		Deque<int[]> deque = new ArrayDeque<>();
+		// x, y 순으로 부여할것!
+		deque.offerLast(new int[] {location[1], location[0]});
+		visited[location[1]][location[0]] = true;
+		while (!deque.isEmpty()) {
+			int[] xy = deque.pollFirst();
+			visited[xy[1]][xy[0]] = true;
+			for (int i = 0; i < 4; i++) {
+				int nx = xy[0] + dx[i];
+				int ny = xy[1] + dy[i];
+				// 방문하지 않았고, 사이즈가 작거나 같다면
+				if (0 <= nx && 0 <= ny && nx < N && ny < N && !visited[ny][nx] && graph[ny][nx] <= size) {
+					count++;
+					if (graph[ny][nx] == size || graph[ny][nx] == 0) {
+						deque.offerLast(new int[] {nx, ny});
+						visited[ny][nx] = true;
+					} else {
+						// 이 경우 물고기를 먹는 경우
+						// 가장 먼저 아기상어 위치를 재할당
+						location[0] = nx;
+						location[1] = ny;
+						// 아기상어가 먹은 물고기의 수를 체크
+						feed++;
+						System.out.println(feed);
+						// 만약 먹은 개수가 현재 크기랑 같다면
+						if (feed == size) {
+							feed = 0;
+							size++;
+							System.out.println(size);
+						}
+						return count;
+					}
+				}
+			}
+		}
+		breakcode = false;
+		return 0;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		graph = new int[N][N];
+		int count = 0;
+		for (int i = 0; i < N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < N; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+				if (graph[i][j] == 9) {
+					location[0] = j;
+					location[1] = i;
+				}
+			}
+		}
+		while (breakcode) {
+			int n = bfs();
+			System.out.println(n);
+			count += n;
+		}
+		System.out.println(count);
+	}
+}

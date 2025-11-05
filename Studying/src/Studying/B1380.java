@@ -1,0 +1,32 @@
+package Studying;
+import java.util.*;
+import java.io.*;
+
+public class B1380 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		int index = 1;
+		while (true) {
+			int n = Integer.parseInt(br.readLine());
+			if (n == 0) break;
+			String[] arr = new String[n];
+			boolean[] check = new boolean[n];
+			for (int i = 0; i < n; i++) {
+				arr[i] = br.readLine();
+			}
+			for (int i = 0; i < 2*n-1; i++) {
+				StringTokenizer st = new StringTokenizer(br.readLine());
+				int num = Integer.parseInt(st.nextToken());
+				check[num-1] = !check[num-1];
+			}
+			for (int i = 0; i < n; i++) {
+				if (check[i]) {
+					sb.append(index).append(" ").append(arr[i]).append('\n');
+				}
+			}
+			index++;
+		}
+		System.out.println(sb.toString());
+	}
+}
