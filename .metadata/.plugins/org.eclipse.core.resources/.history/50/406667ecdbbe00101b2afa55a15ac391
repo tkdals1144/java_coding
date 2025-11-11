@@ -3,9 +3,7 @@
 **문제 링크 :** https://www.acmicpc.net/problem/11725  
 **알고리즘 :** BFS  
 **언어 :** JAVA  
-<p text-align='right'>
-	<a href="../../src/bfs/B11725.java">[코드 보기]</a>
-</p>
+<p text-align='right'>[코드 보기](../../src/bfs/B11725.java)</p>
 
 ---
 
