@@ -1,0 +1,9 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B1926 {
+	public static void main(String[] args) {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	}
+}
