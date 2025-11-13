@@ -13,7 +13,6 @@ public class B1325 {
 		// 사이클 판단을 위한 방법
 		boolean[][] cycle = new boolean[N+1][N+1];
 		int[] ar = new int[N+1];
-		int maxValue = 0;
 		ArrayList<Integer>[] graph = new ArrayList[N+1];
 		for (int i = 1; i < graph.length; i++) {
 			graph[i] = new ArrayList<>();
@@ -37,7 +36,7 @@ public class B1325 {
 			visited[i] = true;
 			while (!deque.isEmpty()) {
 				int num = deque.pollFirst();
-				for (int k : graph[num]) {
+				for (int k : graph[i]) {
 					if (!visited[k]) {
 						deque.offerLast(k);
 						count++;
@@ -46,11 +45,9 @@ public class B1325 {
 				}
 			}
 			ar[i] = count;
-			if (maxValue < count) maxValue = count;
 		}
 		for (int i = 1; i < ar.length; i++) {
-			if (ar[i] == maxValue) sb.append(i).append(' ');
+			System.out.println(i + ": " + ar[i]);
 		}
-		System.out.println(sb.toString());
 	}
 }

@@ -49,7 +49,7 @@ public class B1325 {
 			if (maxValue < count) maxValue = count;
 		}
 		for (int i = 1; i < ar.length; i++) {
-			if (ar[i] == maxValue) sb.append(i).append(' ');
+			if (ar[i] == maxValue) sb.append(ar[i]).append(' ');
 		}
 		System.out.println(sb.toString());
 	}
