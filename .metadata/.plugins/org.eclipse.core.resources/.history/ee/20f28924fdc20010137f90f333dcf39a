@@ -4,35 +4,34 @@ import java.util.*;
 
 public class B5567 {
 	static int N;
+	static int count = 0;
 	static boolean[] visited;
 	static ArrayList<Integer>[] graph;
-	static int[] dist;
-	static void bfs() {
-		int count = 0;
+	static ArrayList<Integer> bfs(ArrayList<Integer> ar) {
 		Deque<Integer> deque = new ArrayDeque<>();
-		deque.offerLast(1);
-		visited[1] = true;
-		dist[1] = 0;
+		ArrayList<Integer> arr = new ArrayList<>();
+		for (int i : ar) {
+			deque.offerLast(i);
+			visited[i] = true;
+		}
 		while (!deque.isEmpty()) {
 			int num = deque.pollFirst();
 			for (int i : graph[num]) {
 				if (!visited[i]) {
-					deque.offerLast(i);
-					visited[i] = true;
-					dist[i] = dist[num] + 1;
+					arr.add(i);
 					count++;
 				}
 			}
 		}
+		return arr;
 	}
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		int count = 0;
+		ArrayList<Integer> arr = new ArrayList<>();
+		arr.add(1);
 		graph = new ArrayList[N+1];
 		visited = new boolean[N+1];
-		dist = new int[N+1];
-		Arrays.fill(dist, -1);
 		for (int i = 1; i <= N; i++) {
 			graph[i] = new ArrayList<>();
 		}
@@ -44,12 +43,8 @@ public class B5567 {
 			graph[a].add(b);
 			graph[b].add(a);
 		}
-		bfs();
-		for (int i = 1; i <= N; i++) {
-			if (dist[i] <= 2 && 0 < dist[i]) {
-				count++;
-			}
-		}
+		arr = bfs(arr);
+		bfs(arr);
 		System.out.println(count);
 	}
 }
