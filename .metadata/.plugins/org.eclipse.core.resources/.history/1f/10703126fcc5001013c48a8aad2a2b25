@@ -1,0 +1,144 @@
+package bfs;
+import java.io.*;
+import java.util.*;
+
+public class B2636 {
+	// 세로길이 N, 가로길이 M
+	// 결국 문제 해결의 키는 가장 바깥쪽과 연결되었는가? 그리고 치즈가 녹은후 내부가 외부와 노출되었는가?
+	static int N, M;
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	// 0 : 아직 확인되지 않은 공간, 1 : 현재 치즈가 있는 공간, 2 : 외부와 접촉된 공간, 3 : 치즈가 녹아 사라진 공간
+	static int[][] graph;
+	// 기본적으로 0에서 시작해서 1이 2로 변화하는 순간 dist값을 증가시킴
+	static int[][] dist;
+	static boolean breakcheck;
+	// 기본적으로 외부에서부터 bfs를 작동시키는것이 합리적으로 생각됨
+	// 0을 2로 채워나가고 만약 1과 부딪힌다면 그 부분을 2로 채워나감
+	// 가장 먼저 2로 초기화하는 과정을 해당 메소드로 해결하자
+	static void resetBfs(int y, int x, int distValue) {
+		Queue<int[]> q = new ArrayDeque<>();
+		q.offer(new int[] {y, x});
+		dist[y][x] = distValue;
+		while (!q.isEmpty()) {
+			int[] yx = q.poll();
+			for (int i = 0; i < 4; i++) {
+				int ny = yx[0] + dy[i];
+				int nx = yx[1] + dx[i];
+				if (check(ny, nx) && graph[ny][nx] == 0 && dist[ny][nx] == -1) {
+					graph[ny][nx] = 2;
+					q.offer(new int[] {ny, nx});
+					dist[ny][nx] = distValue;
+				}
+			}
+		}
+	}
+	// 실제 작업
+	// 0 0 0 0 0 0 
+	// 0 1 1 1 1 0
+	// 0 1 1 1 1 0
+	// 0 1 1 1 1 0
+	// 0 1 1 0 1 0
+	// 0 1 1 1 1 0
+	// 0 0 0 0 0 0
+	// 이런 경우 에러가 발생할듯?
+	static void bfs() {
+		Queue<int[]> q = new ArrayDeque<>();
+		// 최초 추가
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (graph[i][j] == 2 || graph[i][j] == 3) {
+					for (int k = 0; k < 4; k++) {
+						int ny = i + dy[k];
+						int nx = j + dx[k];
+						if (check(ny, nx) && graph[ny][nx] == 1) {
+							q.offer(new int[] {i, j});
+						}
+					}
+				}
+			}
+		}
+		// 큐가 비는 순간까지...
+		while (!q.isEmpty()) {
+			int[] yx = q.poll();
+			for (int i = 0; i < 4; i++) {
+				int ny = yx[0] + dy[i];
+				int nx = yx[1] + dx[i];
+				if (check(ny, nx) && graph[ny][nx] == 1) {
+					graph[ny][nx] = 3;
+					q.offer(new int[] {ny, nx});
+					if (dist[ny][nx] == -1) dist[ny][nx] = dist[yx[0]][yx[1]] + 1;
+					else if (dist[yx[0]][yx[1]] + 1 < dist[ny][nx]) dist[ny][nx] = dist[yx[0]][yx[1]] + 1;
+				}
+				if (check(ny, nx) && graph[ny][nx] == 0) {
+					graph[ny][nx] = 2;
+					dist[ny][nx] = dist[yx[0]][yx[1]];
+					Queue<int[]> q2 = new ArrayDeque<>();
+					q2.offer(new int[] {ny, nx});
+					q.offer(new int[] {ny, nx});
+					while (!q2.isEmpty()) {
+						int[] yx2 = q2.poll();
+						for (int l = 0; l < 4; l++) {
+							int nny = yx2[0] + dy[l];
+							int nnx = yx2[1] + dx[l];
+							if (check(nny, nnx) && graph[nny][nnx] == 0) {
+								graph[nny][nnx] = 2;
+								q2.offer(new int[] {nny, nnx});
+								q.offer(new int[] {nny, nnx});
+								dist[nny][nnx] = dist[yx2[0]][yx2[1]];
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	// 격자 구조 공통 로직
+	static boolean check(int ny, int nx) {
+		return 0 <= nx && 0 <= ny && nx < M && ny < N;
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		int max = 0;
+		int count = 0;
+		graph = new int[N][M];
+		dist = new int[N][M];
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < M; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		graph[0][0] = 2;
+		// dist값을 -1로 초기화함으로써 visited 처리도 병행
+		for (int i = 0; i < dist.length; i++) {
+			Arrays.fill(dist[i], -1);
+		}
+		resetBfs(0, 0, 0);
+		bfs();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < N; i++) {
+			for (int j = 0 ; j < M; j++) {
+				if (max < dist[i][j]) max = dist[i][j];
+			}
+		}
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (max == dist[i][j]) count++;
+			}
+		}
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				sb.append(dist[i][j] + " ");
+			}
+			sb.append('\n');
+		}
+		System.out.println(max);
+		System.out.println(count);
+		System.out.println(sb.toString());
+	}
+}
