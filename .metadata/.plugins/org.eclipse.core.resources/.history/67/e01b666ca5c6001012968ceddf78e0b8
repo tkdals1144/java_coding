@@ -1,0 +1,95 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B3055 {
+	// y축 R, x축 C
+	static int R, C;
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	static char[][] graph;
+	static int[][] time;
+	
+	static void waterBfs(ArrayList<int[]> arr) {
+		Queue<int[]> q = new ArrayDeque<>();
+		for (int[] ar : arr) {
+			// time은 이미 진즉에 0으로 초기화해 두었으니 여기는 넣기만 하면 됨
+			q.offer(new int[] {ar[0], ar[1]});
+		}
+		while (!q.isEmpty()) {
+			int[] yx = q.poll();
+			for (int i = 0; i < 4; i++) {
+				int ny = yx[0] + dy[i];
+				int nx = yx[1] + dx[i];
+				// 그래프 내부이며 아직 탐색하지 않았고 돌이 아니며, 비버의 굴이 아니라면
+				if (check(ny, nx) && time[ny][nx] == -1 && graph[ny][nx] != 'X' && graph[ny][nx] != 'D') {
+					q.offer(new int[] {ny, nx});
+					time[ny][nx] = time[yx[0]][yx[1]] + 1;
+				}
+			}
+		}
+	}
+	static boolean escapeBfs(int[] startpoint) {
+		Queue<int[]> q = new ArrayDeque<>();
+		q.offer(new int[] {startpoint[0], startpoint[1]});
+		time[startpoint[0]][startpoint[1]] = 0;
+		while(!q.isEmpty()) {
+			int[] yx = q.poll();
+			for (int i = 0; i < 4; i++) {
+				int ny = yx[0] + dy[i];
+				int nx = yx[1] + dx[i];
+				// 그래프 내에 있고 돌이 아니면서 시간적으로 여유가 있다면
+				if (check(ny, nx) && graph[ny][nx] != 'X' &&
+						(time[ny][nx] == -1 || time[yx[0]][yx[1]] + 1 < time[ny][nx])) {
+					q.offer(new int[] {ny, nx});
+					time[ny][nx] = time[yx[0]][yx[1]] + 1;
+					if (graph[ny][nx] == 'D') return true;
+				}
+			}
+		}
+		return false;
+	}
+	static boolean check(int y, int x) {
+		return 0 <= y && y < R && 0 <= x && x < C;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		R = Integer.parseInt(st.nextToken());
+		C = Integer.parseInt(st.nextToken());
+		graph = new char[R][C];
+		time = new int[R][C];
+		int[] endpoint = new int[2];
+		int[] startpoint = new int[2];
+		ArrayList<int[]> arr= new ArrayList<>();
+		for (int i = 0; i < time.length; i++) {
+			Arrays.fill(time[i], -1);
+		}
+		for (int i = 0; i < R; i++) {
+			char[] input = br.readLine().toCharArray();
+			for (int j = 0; j < C; j++) {
+				graph[i][j] = input[j];
+				if (input[j] == '*') {
+					time[i][j] = 0;
+					arr.add(new int[] {i, j});
+				}
+				if (input[j] == 'D') {
+					endpoint[0] = i;
+					endpoint[1] = j;
+				}
+				if (input[j] == 'S') {
+					startpoint[0] = i;
+					startpoint[1] = j;
+				}
+			}
+		}
+		time[endpoint[0]][endpoint[1]] = Integer.MAX_VALUE;
+		waterBfs(arr);
+		// 탈출을 성공한다면
+		if(escapeBfs(startpoint)) {
+			System.out.println(time[endpoint[0]][endpoint[1]]);
+		} else {
+			System.out.println("KAKTUS");
+		}
+	}
+}
