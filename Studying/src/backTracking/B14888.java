@@ -1,0 +1,67 @@
+package backTracking;
+import java.util.*;
+import java.io.*;
+
+public class B14888 {
+	static int N;
+	static int[] arr;
+	static int[] calc;
+	static int[] value;
+	static int min = Integer.MAX_VALUE;
+	static int max = Integer.MIN_VALUE;
+	static void dfs(int depth) {
+		if (depth == 0) value[0] = arr[0];
+		if (depth == N-1) {
+			if (value[N-1] < min) min = value[N-1];
+			if (max < value[N-1]) max = value[N-1];
+			return;
+		}
+		for (int i = 0; i < 4; i++) {
+			if (calc[i] == 0) continue;
+			switch (i) {
+			case 0:
+				calc[i]--;
+				value[depth+1] = value[depth] + arr[depth+1];
+				dfs(depth+1);
+				calc[i]++;
+				break;
+			case 1:
+				calc[i]--;
+				value[depth+1] = value[depth] - arr[depth+1];
+				dfs(depth+1);
+				calc[i]++;
+				break;
+			case 2:
+				calc[i]--;
+				value[depth+1] = value[depth] * arr[depth+1];
+				dfs(depth+1);
+				calc[i]++;
+				break;
+			case 3:
+				calc[i]--;
+				value[depth+1] = value[depth] / arr[depth+1];
+				dfs(depth+1);
+				calc[i]++;
+				break;
+			}
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		arr = new int[N];
+		calc = new int[4];
+		value = new int[N];
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < 4; i++) {
+			calc[i] = Integer.parseInt(st.nextToken());
+		}
+		dfs(0);
+		System.out.println(max);
+		System.out.println(min);
+	}
+}
