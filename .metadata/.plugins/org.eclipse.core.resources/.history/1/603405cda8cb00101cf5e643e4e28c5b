@@ -1,0 +1,64 @@
+package backTracking;
+import java.io.*;
+import java.util.*;
+
+public class B14889 {
+	static int N;
+	static int[][] graph;
+	static boolean[][] visited;
+	static int min = Integer.MAX_VALUE;
+	// 결국 문제는 전부 탐색해야 함
+	// 1 ~ N 의 사람중에 N/2, N/2 씩 고르는 방법을 고안해야 함
+	static void dfs(int depth, int team1, int team2) {
+		if (depth == N / 2) {
+			int value = Math.abs(team1 - team2);
+			if (value < min) min = value;
+			return;
+		}
+		int[] ar1 = new int[2];
+		int[] ar2 = new int[2];
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (!visited[i][j]) {
+					visited[i][j] = true;
+					visited[j][i] = true;
+					team1 += graph[i][j];
+					team1 += graph[j][i];
+					ar1[0] = i;
+					ar1[1] = j;
+				}
+			}
+		}
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (!visited[i][j]) {
+					visited[i][j] = true;
+					visited[j][i] = true;
+					team2 += graph[i][j];
+					team2 += graph[j][i];
+					ar2[0] = i;
+					ar2[1] = j;
+				}
+			}
+		}
+		dfs(depth+1, team1, team2);
+		visited[ar1[0]][ar1[1]] = true;
+		visited[ar1[1]][ar1[0]] = true;
+		visited[ar2[0]][ar2[1]] = true;
+		visited[ar2[1]][ar1[0]] = true;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		graph = new int[N][N];
+		visited = new boolean[N][N];
+		for (int i = 0; i < N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < N; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		dfs(0, 0, 0);
+		System.out.println(min);
+	}
+}

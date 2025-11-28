@@ -1,0 +1,62 @@
+package backTracking;
+import java.io.*;
+import java.util.*;
+
+public class B14889 {
+	static int N;
+	static int[][] graph;
+	static boolean[][] visited;
+	static int min = Integer.MAX_VALUE;
+	// 결국 문제는 전부 탐색해야 함
+	// 1 ~ N 의 사람중에 N/2, N/2 씩 고르는 방법을 고안해야 함
+	static void dfs(int depth, int team1, int team2) {
+		if (depth == N / 2 - 1) {
+			int value = Math.abs(team1 - team2);
+			if (value < min) min = value;
+			return;
+		}
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				for (int k = 0; k < N; k++) {
+					for (int l = 0; l < N; l++) {
+						if (visited[i][j] || visited[j][i] || visited[k][l] || visited[l][k]) continue;
+						if (i == j || i == k || i == l || j == k || j == l || k == l) continue;
+						visited[i][j] = true;
+						visited[j][i] = true;
+						visited[k][l] = true;
+						visited[l][k] = true;
+						team1 += graph[i][j];
+						team1 += graph[j][i];
+						team2 += graph[k][l];
+						team2 += graph[l][k];
+						System.out.println("team1 : " + team1 + ", team2 : " + team2);
+						dfs(depth+1, team1, team2);
+						visited[i][j] = false;
+						visited[j][i] = false;
+						visited[k][l] = false;
+						visited[l][k] = false;
+						team1 -= graph[i][j];
+						team1 -= graph[j][i];
+						team2 -= graph[k][l];
+						team2 -= graph[l][k];
+						System.out.println("team11 : " + team1 + ", team22 : " + team2);
+					}
+				}
+			}
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		graph = new int[N][N];
+		visited = new boolean[N][N];
+		for (int i = 0; i < N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < N; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		dfs(0, 0, 0);
+		System.out.println(min);
+	}
+}

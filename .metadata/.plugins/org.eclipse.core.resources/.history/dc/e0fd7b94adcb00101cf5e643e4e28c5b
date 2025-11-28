@@ -1,0 +1,72 @@
+package backTracking;
+import java.io.*;
+import java.util.*;
+
+public class B14889 {
+	static int N;
+	static int[][] graph;
+	static boolean[] visited;
+	static int[] team;
+	static int min = Integer.MAX_VALUE;
+	// 결국 문제는 전부 탐색해야 함
+	// 1 ~ N 의 사람중에 N/2, N/2 씩 고르는 방법을 고안해야 함
+	static void dfs(int depth) {
+		if (depth == N) {
+			for (int i : team) System.out.print(i + "*");
+			int[] team1 = new int[N/2];
+			int[] team2 = new int[N/2];
+			int team1score = 0;
+			int team2score = 0;
+			// [0, 1, 2, 3] 이렇게 4명의 선수가 team1에 들어왔다고 치자
+			
+			for (int i = 0; i < N / 2; i++) {
+				team1[i] = team[i];
+			}
+			for (int l = 0, i = N / 2; i < N; i++, l++) {
+				team2[l] = team[i];
+			}
+			for (int i = 0; i < team1.length; i++) {
+				for (int j = 0; j < team1.length; j++) {
+					if (i == j) continue;
+					team1score += graph[i][j];
+				}
+			}
+			for (int i = 0; i < team2.length; i++) {
+				for (int j = 0; j < team2.length; j++) {
+					if (i == j) continue;
+					team2score += graph[i][j];
+				}
+			}
+			int value = Math.abs(team1score - team2score);
+			if (value < min) min = value;
+			return;
+		}
+		// 문제는 i j k l i-j, k-l 을 엮는다고 해도 추가로 더 들어올 사람들의 조합을 기억하지 못한다는것!
+		// 예를들어 1-2, 3-4 를 넣어서 재귀를 돌려도 1-5, 2-5 ,, 3-6, 4-6 을 넣을 방법이 전무하다는것이다
+		// 그렇다면 애초에 누구를 넣을지만 골라서 재귀를 돌려보는건 어떨까?
+		// N개의 수 중에서 중복되지 않게 수를 넣는 방법
+		for (int i = 0; i < N; i++) {
+			if (!visited[i]) {
+				visited[i] = true;
+				team[depth] = i;
+				dfs(depth+1);
+				visited[i] = false;
+			}
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		graph = new int[N][N];
+		visited = new boolean[N];
+		team = new int[N];
+		for (int i = 0; i < N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < N; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		dfs(0);
+		System.out.println(min);
+	}
+}
