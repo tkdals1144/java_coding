@@ -1,0 +1,37 @@
+package backTracking;
+import java.util.*;
+import java.io.*;
+
+public class B1182 {
+	// N개의 수열과 그 합 S
+	static int N, S;
+	static int[] arr;
+	static int count = 0;
+	// 깊이 depth, 마지막 깊이 last, 합산값 sum, 조합유지 idx
+	static void dfs(int depth, int last, int sum, int idx) {
+		if (depth == last) {
+			if (sum == S) count++;
+			return;
+		}
+		for (int i = idx; i < N; i++) {
+			sum += arr[i];
+			dfs(depth+1, last, sum, i+1);
+			sum -= arr[i];
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		S = Integer.parseInt(st.nextToken());
+		arr = new int[N];
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		for (int i = 1; i <= N; i++) {
+			dfs(0, i, 0, 0);
+		}
+		System.out.println(count);
+	}
+}
