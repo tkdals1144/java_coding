@@ -1,0 +1,40 @@
+package backTracking;
+import java.io.*;
+import java.util.*;
+
+public class B6603 {
+	// 총 원소의 개수
+	static int N;
+	static int[] arr;
+	static int[] saved;
+	static StringBuilder sb = new StringBuilder();
+	static void dfs(int depth, int idx) {
+		if (depth == 6) {
+			for (int i : saved) sb.append(i + " ");
+			sb.append('\n');
+			return;
+		}
+		for (int i = idx; i < N; i++) {
+			saved[depth] = arr[i];
+			dfs(depth+1, i+1);
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		while (true) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			N = Integer.parseInt(st.nextToken());
+			if (N == 0) break;
+			else {
+				arr = new int[N];
+				saved = new int[6];
+				for (int i = 0; i < N; i++) {
+					arr[i] = Integer.parseInt(st.nextToken());
+				}
+				dfs(0, 0);
+			}
+			sb.append('\n');
+		}
+		System.out.println(sb.toString());
+	}
+}
