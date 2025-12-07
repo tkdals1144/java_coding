@@ -1,0 +1,54 @@
+package backTracking;
+import java.util.*;
+import java.io.*;
+
+public class B12100 {
+	static int N;
+	static int[][] firstgraph;
+	static int[][] dfsgraph;
+	static int max = 0;
+	static void dfs(int depth, int[][] graph) {
+		if (depth == 5) {
+			return;
+		}
+		for (int i = 0; i < 4; i++) {
+			dfsgraph = move_graph(graph, i);
+			dfs(depth+1, dfsgraph);
+		}
+	}
+	static int[][] move_graph(int[][] graph, int num) {
+		boolean check = false;
+		switch (num) {
+		// 왼쪽으로 이동
+		case 0:
+			for (int k = 0; k < N; k++) {
+				// graph[k][i] : 이동시킬 위치, graph[k][j] : 이동전 위치
+				for (int i = 0; i < N; i++) {
+					check = false;
+					for (int j = i+1; j < N; j++) {
+						// 한번만 결합이 일어나니
+						if (graph[k][i] == graph[k][j] && !check) {
+							graph[k][i] += graph[k][j];
+							check = true;
+						}
+						if (check && graph[k][i] != 0) break;
+						if (graph[k][j] == 0) continue;
+						if (graph[k][i] == 0 && )
+						}
+					}
+				}
+			}
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		firstgraph = new int[N][N];
+		for (int i = 0; i < N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < N; j++) {
+				firstgraph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+	}
+}
