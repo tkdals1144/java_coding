@@ -1,0 +1,49 @@
+package dp;
+import java.util.*;
+import java.io.*;
+
+public class B9184 {
+	static int[][][] dp;
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		// -50 ~ 50 인데 -는 되는순간 값이 1로 반환되고, 20 이상은 20으로 반환되므로
+		dp = new int[21][21][21];
+		dp[0][0][0] = 1;
+		for (int i = 0; i < dp.length; i++) {
+			for (int j = 0; j < dp.length; j++) {
+				for (int k = 0; k < dp.length; k++) {
+					int ni = i - 1;
+					int nj = j - 1;
+					int nk = k - 1;
+					if (ni < 0) ni = 0;
+					if (nk < 0) nk = 0;
+					if (nj < 0) nj = 0;
+					if (i < j && j < k) {
+						dp[i][j][k] = dp[i][j][nk] + dp[i][nj][nk] - dp[i][nj][k];
+					} else {
+						dp[i][j][k] = dp[ni][j][k] + dp[ni][nj][k] + dp[ni][j][nk] - dp[ni][nj][nk];
+					}
+				}
+			}
+		}
+		while (true) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			int c = Integer.parseInt(st.nextToken());
+			if (a == -1 && b == -1 && c == -1) break;
+			else {
+				if (a <= 0 || b <= 0 || c <= 0) {
+					sb.append("w(" + a + ", " + b + ", " + c + ") = 1").append('\n');
+				} else if (20 < a || 20 < b || 20 < c) {
+					sb.append("w(" + a + ", " + b + ", " + c + ") = " + dp[20][20][20]).append('\n');
+				} else {
+					sb.append("w(" + a + ", " + b + ", " + c + ") = " + dp[a][b][c]).append('\n');
+				}
+			}
+		}
+		System.out.println(sb.toString());
+	}
+}
