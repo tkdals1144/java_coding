@@ -1,0 +1,22 @@
+package dp;
+import java.util.*;
+import java.io.*;
+
+public class B1904 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		int[] dp = new int[1000001];
+		// N = 1  -- 1
+		// N = 2  -- 00 11
+		// N = 3  -- 001 100 111
+		// N = 4  -- 0011 0000 1001 1100 1111
+		// N = 5  -- 00001 00111 11111 11100 10000 10011 11001 00100
+		dp[1] = 1;
+		dp[2] = 2;
+		for (int i = 3; i < dp.length; i++) {
+			dp[i] = dp[i-1] + dp[i-2];
+		}
+		System.out.println(dp[N]);
+	}
+}
