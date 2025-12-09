@@ -1,0 +1,42 @@
+package dp;
+import java.util.*;
+import java.io.*;
+
+public class B1932 {
+	//      0      - k = 0
+	//     1 2     - k = 1
+	//    3 4 5    - k = 2
+	//   6 7 8 9   - k = 3
+	static int[] dp;
+	static int max = 0;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(br.readLine());
+		int all = n * (n+1) / 2;
+		// idx는 dp의 index
+		int idx = 0;
+		dp = new int[all];
+		for (int i = 0, k = 0; i < n; i++, k++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 0; j <= k; j++, idx++) {
+				int num = Integer.parseInt(st.nextToken());
+				// 첫 요소라면
+				if (i == 0) {
+					dp[idx] = num;
+				}
+				// 양 옆 테두리에 위치했다면
+				else if (j == 0) {
+					dp[idx] = dp[idx-k] + num;
+				} else if (j == k) {
+					dp[idx] = dp[idx-k-1] + num;
+				}
+				// 그 외는 삼각형 내부
+				else {
+					dp[idx] = Math.max(dp[idx-k], dp[idx-k-1]) + num;
+				}
+				max = Math.max(max, dp[idx]);
+			}
+		}
+		System.out.println(max);
+	}
+}
