@@ -9,7 +9,7 @@ public class B11054 {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		// 0 - 실제 수 저장, 1 - 증가상태, 2 - 감소상태
+		// 0 - 실제 수 저장, 1 - 증가상태, 2 - 감소상태 
 		dp = new int[N][3];
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
@@ -50,3 +50,4 @@ public class B11054 {
 		System.out.println(max);
 	}
 }
+
