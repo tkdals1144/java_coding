@@ -34,7 +34,7 @@ public class B11054 {
 			dp[i][1] += temp;
 		}
 		// 감소상태 연산
-		for (int i = N - 2; 0 <= i; i--) {
+		for (int i = N - 2; 0 < i; i--) {
 			int temp = 0;
 			for (int j = i + 1; j < N; j++) {
 				if (dp[j][0] < dp[i][0]) {
