@@ -33,15 +33,16 @@ public class B2565 {
 		// A 기준으로 오름차순된 전선에서 B 값을 통해 LIS 계산
 		for (int i = 0; i < N; i++) {
 			int cur = wires[i].b;
+			
 			// 들어갈 위치
 			int pos = Arrays.binarySearch(lis, 0, size, cur);
-			// 값을 찾지 못했다면 삽입할 실제 위치로 변환 (어떤 값이든 결국 이것을 거치게 됨)
+			
+			// 값을 찾지 못했다면 삽입할 실제 위치로 변환
 			if (pos < 0) {
 				pos = -(pos + 1);
 			}
-			// 끝났나? 이제 pos라는 위치에 들어온 cur 값을 집어넣어주면 된다
+			
 			lis[pos] = cur;
-			// 만약 pos값이 모든 값들보다 크다면 사이즈를 늘려야한다
 			if (pos == size) size++;
 		}
 		System.out.println(N - size);
