@@ -1,0 +1,92 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B2146 {
+	static int N;
+	static int min = Integer.MAX_VALUE;
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	// 0은 바다, 1은 육지
+	static int[][] graph;
+	static int[][] dist;
+	static boolean[][] visited;
+	static ArrayList<int[]> temp;
+	// 먼저 육지를 전부 찾아야 함
+	static void bfsFirst(int y, int x) {
+		for (int i = 0; i < N; i++) {
+			Arrays.fill(dist[i], -1);
+		}
+		temp = new ArrayList<>();
+		Queue<int[]> q = new ArrayDeque<>();
+		q.offer(new int[] {y, x});
+		// 육지라면 0으로 초기화
+		dist[y][x] = 0;
+		visited[y][x] = true;
+		temp.add(new int[] {y, x});
+		while (!q.isEmpty()) {
+			int[] yx = q.poll();
+			for (int i = 0; i < 4; i++) {
+				int ny = yx[0] + dy[i];
+				int nx = yx[1] + dx[i];
+				// 현재 육지는 전부 0으로 초기화함
+				if (check(ny, nx) && dist[ny][nx] == -1 && graph[ny][nx] == 1) {
+					q.offer(new int[] {ny, nx});
+					dist[ny][nx] = 0;
+					visited[ny][nx] = true;
+					temp.add(new int[] {ny, nx});
+				}
+			}
+		}
+	}
+	static void bfs() {
+		Queue<int[]> q = new ArrayDeque<>();
+		for (int[] yx : temp) {
+			q.offer(yx);
+		}
+		while (!q.isEmpty()) {
+			int[] yx = q.poll();
+			for (int i = 0; i < 4; i++) {
+				int ny = yx[0] + dy[i];
+				int nx = yx[1] + dx[i];
+//				아직 탐색하지 않았으며, 그것이 바다라면
+				if (check(ny, nx) && dist[ny][nx] == -1 && graph[ny][nx] == 0) {
+					q.offer(new int[] {ny, nx});
+					dist[ny][nx] = dist[yx[0]][yx[1]] + 1;
+				}
+				// 현재 육지는 이미 dist가 전부 0으로 초기화 된 상태다. 그렇다면 -1인데 육지다? 그건 다른 육지다!
+				else if (check(ny, nx) && dist[ny][nx] == -1 && graph[ny][nx] == 1) {
+					min = Math.min(min, dist[yx[0]][yx[1]]);
+				}
+			}
+		}
+	}
+	static boolean check(int y, int x) {
+		// 그래프 내에 있다면
+		return (0 <= x && 0 <= y && x < N && y < N);
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		graph = new int[N][N];
+		dist = new int[N][N];
+		visited= new boolean[N][N];
+		for (int i = 0; i < N; i++) {
+			Arrays.fill(dist[i], -1);
+		}
+		for (int i = 0; i < N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < N; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (graph[i][j] == 0 || dist[i][j] == 0 || visited[i][j]) continue;
+				bfsFirst(i, j);
+				bfs();
+			}
+		}
+		System.out.println(min);
+	}
+}
