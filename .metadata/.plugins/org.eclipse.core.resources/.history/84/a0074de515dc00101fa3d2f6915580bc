@@ -1,0 +1,59 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B1245 {
+	static int N, M;
+	static int[][] graph;
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	static boolean[][] visited;
+	static int returnCount() {
+		int count = 0;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (!visited[i][j] && graph[i][j] != 0) {
+					bfs(i, j);
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+	static void bfs(int y, int x) {
+		Queue<int[]> q = new ArrayDeque<>();
+		q.offer(new int[] {y, x});
+		visited[y][x] = true;
+		while (!q.isEmpty()) {
+			int[] yx = q.poll();
+			for (int i = 0; i < 4; i++) {
+				int ny = yx[0] + dy[i];
+				int nx = yx[1] + dx[i];
+				if (check(ny, nx)) {
+					q.offer(new int[] {ny, nx});
+					visited[ny][nx] = true;
+				}
+			}
+		}
+	}
+	static boolean check(int y, int x) {
+		return 0 <= y && y < N && 0 <= x && x < M
+				&& !visited[y][x] && graph[y][x] != 0;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		graph = new int[N][M];
+		visited = new boolean[N][M];
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < M; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		int count = returnCount();
+		System.out.println(count);
+	}
+}
