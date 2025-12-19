@@ -28,11 +28,12 @@ public class B12015 {
 					// 없는값이라면 옳은 위치에 삽입해야 함
 					else {
 						int temp = -(num + 1);
-						lis[temp] = arr[i];
+						lis[temp] = arr[i]; 
 					}
 				}
 			}
 		}
 		System.out.println(size);
 	}
+
 }
