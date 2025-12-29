@@ -21,7 +21,6 @@ public class B3067 {
 		for (int i = 0; i < T; i++) {
 			N = Integer.parseInt(br.readLine());
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			coins = new int[N];
 			for (int j = 0; j < N; j++) {
 				coins[j] = Integer.parseInt(st.nextToken());
 			}
