@@ -1,0 +1,35 @@
+package dp;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
+public class B1106 {
+	// C : 늘려야 할 사람, N : 홍보 가능한 도시의 개수
+	// 출력 : 투자해야 할 돈의 최소값
+	static int C, N;
+	static int[] count;
+	static int[][] select;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int countIdx = Integer.parseInt(st.nextToken());
+		count = new int[countIdx+1];
+		int num = Integer.parseInt(st.nextToken());
+		select = new int[num][2];
+		for (int i = 0; i < num; i++) {
+			st = new StringTokenizer(br.readLine());
+			// key
+			select[i][0] = Integer.parseInt(st.nextToken());
+			// value
+			select[i][1] = Integer.parseInt(st.nextToken());
+		}
+		Arrays.sort(select, (a, b) -> {
+			double r1 = (double) a[0] / a[1];
+			double r2 = (double) b[0] / b[1];
+			return Double.compare(r1, r2);
+		});
+	}
+}
