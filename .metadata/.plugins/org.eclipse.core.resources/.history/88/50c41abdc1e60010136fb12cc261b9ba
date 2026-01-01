@@ -1,0 +1,61 @@
+package dp;
+import java.util.*;
+import java.io.*;
+public class B5350 {
+	// n : number of items
+	// W : capacity of the plane
+	static int n, W;
+	static int[][] items;
+	static int[][] dp;
+	static StringBuilder sb = new StringBuilder();
+
+	// initialization is the core of dp
+	static void initialize() {
+		for (int w = 0; w <= W; w++) {
+			if (items[0][0] <= w) {
+				dp[0][w] = items[0][1];
+			}
+		}
+	}
+	// 0-1 knapsack
+	static void knapsack() {
+		// input all items
+		for (int i = 0; i < n; i++) {
+			int weight = items[i][0];
+			int value = items[i][1];
+			for (int w = 1; w <= W; w++) {
+				// inherit || update
+				if (weight <= w) {
+					dp[i][w] = Math.max(dp[i-1][w], dp[i-1][w-weight] + value);
+				} else {
+					System.out.print("why?");
+					dp[i][w] = dp[i-1][w];
+					System.out.print("can?");
+				}
+			}
+		}
+		sb.append(dp[n-1][W]).append('\n');
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		for (int i = 0; i < T; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			n = Integer.parseInt(st.nextToken());
+			W = Integer.parseInt(st.nextToken());
+			items = new int[n][2];
+			dp = new int[n][W+1];
+			for (int j = 0; j < n; j++) {
+				st = new StringTokenizer(br.readLine());
+				int weight = Integer.parseInt(st.nextToken());
+				int value = Integer.parseInt(st.nextToken());
+				items[j][0] = weight;
+				items[j][1] = value;
+			}
+			initialize();
+			knapsack();
+		}
+		System.out.println(sb.toString());
+	}
+}
