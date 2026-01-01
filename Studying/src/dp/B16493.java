@@ -11,7 +11,7 @@ public class B16493 {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		books = new int[M][2];
-		// M개의 책을 N일까지 고려한 결과
+		// M개의 책을 N일까지 고려한 결과 
 		dp = new int[M][N+1];
 		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
@@ -43,3 +43,4 @@ public class B16493 {
 		System.out.println(dp[M-1][N]);
 	}
 }
+
