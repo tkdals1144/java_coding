@@ -1,0 +1,48 @@
+package dp;
+import java.util.*;
+import java.io.*;
+public class B2073 {
+	// 총 길이 D, 수도관 종류 개수 P 
+	// 출력 -> 가능한 최대 수도관 용량
+	static int D, P;
+	static int[][] pipe;
+	static int[][] dp;
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		D = Integer.parseInt(st.nextToken());
+		P = Integer.parseInt(st.nextToken());
+		pipe = new int[P][2];
+		dp = new int[P][D+1];
+		// 파이프 초기화 작업
+		for (int i = 0; i < P; i++) {
+			st = new StringTokenizer(br.readLine());
+			int length = Integer.parseInt(st.nextToken());
+			int volume = Integer.parseInt(st.nextToken());
+			pipe[i][0] = length;
+			pipe[i][1] = volume;
+		}
+//		 dp 초기화 작업
+		for (int i = 0; i <= D; i++) {
+			if (pipe[0][0] <= i) {
+				dp[0][i] = pipe[0][1];
+			}
+		}
+
+		// dp 적립 시작
+		for (int i = 1; i < P; i++) {
+			int length = pipe[i][0];
+			int volume = pipe[i][1];
+			for (int j = 0; j <= D; j++) {
+				if (length <= j) {
+					dp[i][j] = Math.min(dp[i-1][j], dp[i-1][j-length] + volume);
+				} else {
+					dp[i][j] = dp[i-1][j];
+				}
+			}
+			
+		}
+		System.out.println(dp[P-1][D]);
+	}
+}
