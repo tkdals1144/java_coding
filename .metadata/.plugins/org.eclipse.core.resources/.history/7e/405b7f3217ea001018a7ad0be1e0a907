@@ -1,0 +1,44 @@
+package prefixSum;
+import java.util.*;
+import java.io.*;
+
+public class B10986 {
+	static int N, M;
+	static int[] dp;
+	static int[] cnt;
+	static int count = 0;
+	static int count2 = 0;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		dp = new int[N+1];
+		cnt = new int[M];
+		// 누적합 자체가 M으로 나누어 떨어지는 경우 대비
+		cnt[0] = 1;
+		st = new StringTokenizer(br.readLine());
+		// 각 누적합을 저장
+		for (int i = 1; i <= N; i++) {
+			dp[i] = dp[i-1] + Integer.parseInt(st.nextToken());
+			cnt[dp[i] % M]++;
+		}
+		// 1번 방법 (직관적 풀이) (O(N^2))
+		for (int i = 1; i <= N; i++) {
+			for (int j = 0; j < i; j++) {
+				if ((dp[i] - dp[j]) % M == 0) count++;
+				// -> dp[i] % M == dp[j] % M 임을 이용
+				// 즉 같은 나머지를 가진 것들끼리 묶고 그것을 조합을 이용해 얻어내면 된다.
+			}
+		}
+		// 2번 방법 (조합 이용)
+		for (int i = 0; i < M; i++) {
+			if (cnt[i] >= 2) {
+				count2 += cnt[i] * (cnt[i] - 1) / 2;
+			}
+		}
+		
+		System.out.println(count);
+		System.out.println(count2);
+	}
+}

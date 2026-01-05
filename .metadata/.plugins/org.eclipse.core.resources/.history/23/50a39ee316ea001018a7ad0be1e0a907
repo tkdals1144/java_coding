@@ -1,0 +1,27 @@
+package prefixSum;
+import java.util.*;
+import java.io.*;
+
+public class B10986 {
+	static int N, M;
+	static int[] dp;
+	static int count = 0;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		dp = new int[N+1];
+		st = new StringTokenizer(br.readLine());
+		// 각 누적합을 저장
+		for (int i = 1; i <= N; i++) {
+			dp[i] = dp[i-1] + Integer.parseInt(st.nextToken());
+		}
+		for (int i = 1; i <= N; i++) {
+			for (int j = 0; j < i; j++) {
+				if ((dp[i] - dp[j]) % M == 0) count++;
+			}
+		}
+		System.out.println(count);
+	}
+}
