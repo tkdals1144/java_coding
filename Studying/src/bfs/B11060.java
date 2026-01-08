@@ -1,0 +1,36 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+public class B11060 {
+	static int N;
+	static int[] graph;
+	static int[] dist;
+	static void bfs() {
+		Queue<Integer> q = new ArrayDeque<>();
+		dist[0] = 0;
+		q.offer(0);
+		while(!q.isEmpty()) {
+			int num = q.poll();
+			int roll = graph[num];
+			for (int i = 1; i <= roll; i++) {
+				if (num + i < N && dist[num+i] == -1) {
+					q.offer(num+i);
+					dist[num+i] = dist[num] + 1;
+				}
+			}
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		graph = new int[N];
+		dist = new int[N];
+		Arrays.fill(dist, -1);
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			graph[i] = Integer.parseInt(st.nextToken());
+		}
+		bfs();
+		System.out.println(dist[N-1]);
+	}
+}
