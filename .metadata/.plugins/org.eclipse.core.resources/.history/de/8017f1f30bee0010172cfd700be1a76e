@@ -1,0 +1,83 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+class Loc {
+	public char x;
+	public int y;
+	public Loc next;
+	public Loc(char x, int y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
+	public void next(Loc loc) {
+		this.next = loc;
+	}
+}
+public class B9204 {
+	static int T;
+	static int[][] dist;
+	static Loc[][] saved;
+	static int[] dx = {-7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7
+			,-7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7};
+	static int[] dy = {-7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7
+			,7, 6, 5, 4, 3, 2, 1, -1, -2, -3, -4, -5, -6, -7};
+	static void reset() {
+		dist = new int[8][8];
+		saved = new Loc[8][8];
+		for (int i = 0; i < dist.length; i++) {
+			Arrays.fill(dist[i], -1);
+		}
+	}
+	static int bfs(int startX, int startY, int endX, int endY) {
+		Deque<int[]> q = new ArrayDeque<>();
+		q.offer(new int[] {startY, startX});
+		dist[startY][startX] = 0;
+		saved[startY][startX] = new Loc((char)(startX + 65), startY);
+		saved[startY][startX].next = null;
+		while (!q.isEmpty()) {
+			int[] yx = q.poll();
+			int y = yx[0];
+			int x = yx[1];
+			for (int i = 0; i < dx.length; i++) {
+				int ny = yx[0] + dy[i];
+				int nx = yx[1] + dx[i];
+				if (check(ny, nx)) {
+					q.offer(new int[] {ny, nx});
+					dist[ny][nx] = dist[y][x] + 1;
+					saved[ny][nx] = new Loc((char) (nx + 65), ny);
+					saved[ny][nx].next(saved[y][x]);
+				}
+			}
+		}
+		return dist[endY][endX];
+	}
+	static boolean check(int y, int x) {
+		return 0 <= y && 0 <= x && y < 8 && x < 8 && dist[y][x] == -1;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		T = Integer.parseInt(br.readLine());
+		for (int i = 0; i < T; i++) {
+			reset();
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int startX = Integer.parseInt(st.nextToken()) - 65;
+			int startY = Integer.parseInt(st.nextToken()) - 1;
+			int endX = Integer.parseInt(st.nextToken()) - 65;
+			int endY = Integer.parseInt(st.nextToken()) - 1;
+			int answer = bfs(startX, startY, endX, endY);
+			if (answer == -1) sb.append("Impossible").append('\n');
+			else {
+				sb.append(answer + " ");
+				Loc loc = saved[startX][startY];
+				while (true) {
+					sb.append(loc.x + " " + loc.y + " ");
+					loc = loc.next;
+					if (loc == null) break;
+				}
+				sb.append('\n');
+			}
+		}
+	}
+}
