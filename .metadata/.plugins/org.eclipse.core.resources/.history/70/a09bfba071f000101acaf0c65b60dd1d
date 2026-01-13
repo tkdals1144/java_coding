@@ -1,0 +1,47 @@
+package prefixSum;
+import java.util.*;
+import java.io.*;
+public class B25682 {
+	static int N, M, K;
+	static char[][] firstBlack;
+	static char[][] firstWhite;
+	static int[][] firstBlackDp;
+	static int[][] firstWhiteDp;
+	static void reset() {
+		boolean check = false;
+		firstBlack = new char[N+1][M+1];
+		firstWhite = new char[N+1][M+1];
+		firstBlackDp = new int[N+1][M+1];
+		firstWhiteDp = new int[N+1][M+1];
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= M; j++) {
+				check = !check;
+				if (check) {
+					firstBlack[i][j] = 'B';
+					firstWhite[i][j] = 'W';
+				} else {
+					firstBlack[i][j] = 'W';
+					firstWhite[i][j] = 'B';
+				}
+			}
+			check = !check;
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		reset();
+		for (int i = 1; i <= N; i++) {
+			char[] input = br.readLine().toCharArray();
+			for (int j = 1; j <= M; j++) {
+				if (firstBlack[i][j] == 'B') {
+					
+				}
+			}
+		}
+		
+	}
+}
