@@ -1,0 +1,32 @@
+package greedy;
+import java.util.*;
+import java.io.*;
+public class B1931 {
+	// 회의를 가능한 일찍 끝낼수록 그 뒤에 더 많은 회의를 진행할 수 있다
+	// 즉, 그리디 알고리즘
+	static int N;
+	static Integer[][] arr;
+	static int count;
+	static int minTime = 0;
+	static void func() {
+		for (int i = 0; i < N; i++) {
+			if (minTime <= arr[i][0]) {
+				count++;
+				minTime = arr[i][1];
+			}
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		arr = new Integer[N][2];
+		for (int i = 0; i < N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			arr[i][0] = Integer.parseInt(st.nextToken());
+			arr[i][1] = Integer.parseInt(st.nextToken());
+		}
+		Arrays.sort(arr, (a, b) -> a[1] - b[1]);
+		func();
+		System.out.println(count);
+	}
+}
