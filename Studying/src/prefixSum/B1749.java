@@ -1,0 +1,44 @@
+package prefixSum;
+import java.util.*;
+import java.io.*;
+public class B1749 {
+	static int N, M;
+	static int[][] dp;
+	static int[][] arr;
+	static int maxCount = Integer.MIN_VALUE;
+	static void func() {
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= M; j++) {
+				dp[i][j] = dp[i-1][j] + dp[i][j-1] - dp[i-1][j-1] + arr[i-1][j-1];
+			}
+		}
+	}
+	static void func2() {
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= M; j++) {
+				for (int l = i; l <= N; l++) {
+					for (int k = j; k <= M; k++) {
+						maxCount = Math.max(maxCount, dp[l][k] - dp[l][j-1] - dp[i-1][k] + dp[i-1][j-1]);
+					}
+				}
+			}
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		dp = new int[N+1][M+1];
+		arr = new int[N][M];
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < M; j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		func();
+		func2();
+		System.out.println(maxCount);
+	}
+}
