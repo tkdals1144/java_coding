@@ -1,0 +1,32 @@
+package greedy;
+
+import java.io.*;
+import java.util.*;
+
+public class B13305 {
+	static int N;
+	static int[] oil;
+	static int[] road;
+	static int count = 0;
+	static int minOil = Integer.MAX_VALUE;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		road = new int[N-1];
+		oil = new int[N];
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N - 1; i++) {
+			road[i] = Integer.parseInt(st.nextToken());
+		}
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			int temp = Integer.parseInt(st.nextToken());
+			minOil = Math.min(minOil, temp);
+			oil[i] = minOil;
+		}
+		for (int i = 0; i < N - 1; i++) {
+			count += oil[i] * road[i];
+		}
+		System.out.println(count);
+	}
+}
