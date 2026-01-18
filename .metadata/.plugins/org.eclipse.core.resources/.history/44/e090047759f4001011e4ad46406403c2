@@ -1,0 +1,30 @@
+package divideAndConquer;
+import java.util.*;
+import java.io.*;
+public class B1780 {
+	static int N;
+	static int[][] graph;
+	static void divide(int x, int y, int size) {
+		
+	}
+	static boolean isSame(int x, int y, int size) {
+		if (size == 1) return true;
+		for (int i = x; i < x+size; i++) {
+			for (int j = y; j < y+size; j++) {
+				if (graph[i][j] != graph[x][y]) return false;
+			}
+		}
+		return true;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		for (int i = 0; i < N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < N; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		divide(0, 0, N);
+	}
+}
