@@ -1,0 +1,34 @@
+package divideAndConquer;
+import java.util.*;
+import java.io.*;
+public class B11401 {
+	static long N, K;
+	// N! / (N-K)!K! mod p -> N! * ((N-K)!K!)^-1 mod p
+	// -> N! * ((N-K)!K!)^(p-2) mod p
+	static long fact(long n) {
+		if (n == 1) return 1;
+		else return (n * fact(n-1)) % K;
+	}
+	static long longFact(long n, long size) {
+		// 사이즈가 1 이라면 더 나누지 않고 그 값을 그대로 나눠줌 (breakpoint)
+		if (size == 1) {
+			return n % K;
+		}
+		
+		// 사이즈를 반절로 나눔
+		long half = longFact(n, size/2);
+		// 원래는 이대로면 충분하지만...
+		long result = (half * half) % K;
+		// size 값이 1 이라면 하나가 남는 경우가 발생함
+		if (size % 2 == 1) result = (result * n) % K;
+		return result;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		System.out.println(fact(N) * longFact(fact(N-K), 1000000005) * longFact(fact(K), 1000000005))
+		System.out.println(fact(N));
+	}
+}
