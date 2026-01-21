@@ -1,0 +1,46 @@
+package divideAndConquer;
+import java.util.*;
+import java.io.*;
+public class B4233 {
+	// a^p % p == a % p
+	// a^(p-1) % p == 1
+	static boolean isPrime(long num) {
+		if (num < 2) return false;
+		for (long i = 2; i*i <= num; ++i) {
+			if (num % i == 0) return false;
+		}
+		return true;
+	}
+	static long pow(long p, long a) {
+		// breakpoint 설정
+		if (p == 1) {
+			return a % p;
+		}
+		// divide
+		long half = pow(p/2, a);
+		// conquer
+		long result = (half * half) % p;
+		if (p % 2 == 1) {
+			result = (a * result) % p;
+		}
+		// return
+		return result;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		while (true) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			long p = Long.parseLong(st.nextToken());
+			long a = Long.parseLong(st.nextToken());
+			if (p == 0 && a == 0) break;
+			if (isPrime(p)) {
+				sb.append("no").append('\n');
+			} else {
+				if (pow(p-1, a) == 1) sb.append("yes").append('\n');
+				else sb.append("no").append('\n');
+			}
+		}
+		System.out.println(sb.toString());
+	}
+}
