@@ -1,0 +1,45 @@
+package binarySearch;
+import java.util.*;
+import java.io.*;
+public class B2110 {
+	static int N, C;
+	static int[] arr;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		C = Integer.parseInt(st.nextToken());
+		arr = new int[N];
+		for (int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(br.readLine());
+		}
+		Arrays.sort(arr);
+		// 최소 거리
+		int left = 1;
+		// 최대 거리
+		int right = arr[N-1] - arr[0];
+		int answer = 0;
+		// 1 2 4 8 9
+		while (left <= right) {
+			int mid = (left + right) / 2;
+			// 최초값 주입
+			int temp = 1;
+			int last = arr[0];
+			// 검증 진입
+			for (int i = 1; i < N; i++) {
+				if (mid <= arr[i] - last) {
+					temp++;
+					last = arr[i];
+				}
+			}
+			// 가능하다면
+			if (C <= temp) {
+				answer = mid;
+				left = mid + 1;
+			} else {
+				right = mid - 1;
+			}
+		}
+		System.out.println(answer);
+	}
+}
