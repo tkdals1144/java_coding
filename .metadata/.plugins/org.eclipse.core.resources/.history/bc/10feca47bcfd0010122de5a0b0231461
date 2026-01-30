@@ -19,7 +19,7 @@ public class B3184 {
 		visited = new boolean[N][M];
 		for (int i = 0; i < N; i++) {
 			char[] input = br.readLine().toCharArray();
-			for (int j = 0; j < M; j++) { 
+			for (int j = 0; j < M; j++) {
 				graph[i][j] = input[j];
 			}
 		}
