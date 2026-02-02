@@ -19,14 +19,9 @@ public class B18291 {
 	static final int MOD = 1000000007;
 	static int N;
 	static long divide(int size) {
-		if (size == 0) return 1;
 		if (size == 1) return 2;
 		long half = divide(size / 2);
 		long result = (half * half) % MOD;
-		
-		if (size % 2 == 1) {
-			result = (result * 2) % MOD;
-		}
 		return result;
 	}
 	public static void main(String[] args) throws IOException {
