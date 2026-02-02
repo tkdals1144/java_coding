@@ -9,5 +9,6 @@ public class B1550 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int num = Integer.parseInt(br.readLine(), 16);
 		System.out.println(num);
+		
 	}
 }

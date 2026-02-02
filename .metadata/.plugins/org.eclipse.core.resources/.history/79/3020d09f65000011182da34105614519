@@ -1,0 +1,15 @@
+package divideAndConquer;
+import java.util.*;
+import java.io.*;
+public class B18291 {
+	// 문제는 모든 경우의 수를 요구하고 있다.
+	// 1번 -> N 번까지 가는 모든 경우의 수
+	// 뛰는 개수는 몇이든 상관없다 (즉, 단순하게 접근한다면 시간초과가 날 확률이 높다)
+	// 일단 앞으로만 이동 가능하다.
+	// dp로 해결하기에는 이전 상태에 추가 상태를 더하는것으로 해결이 불가능해 보인다
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+	}
+}
