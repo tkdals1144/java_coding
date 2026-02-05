@@ -1,0 +1,56 @@
+package divideAndConquer;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class B15319 {
+	static int N;
+	static int x;
+	static int K;
+	static final int MOD = 1000000007;
+	// 0 1 2 3 4 5 6 7 ...
+	// 0
+	// 1
+	// 0 1
+	// 2
+	// 0 2
+	// 1 2
+	// 0 1 2
+	// 3
+	// 음... 이거 2진수 변환인가?
+	// 1 -> 1
+	// 2 -> 01
+	// 3 -> 11
+	// 4 -> 001
+	// 5 -> 101 -> 2^2 + 2^0
+	// 예를들어 7라는 값이 size로 들어온다고 치자
+	// 그러면 일단 이걸 2진수로 변환하면 111
+	static long solve(long size) {
+	    long base = x;      // x^0, x^1, x^2 ...
+	    long result = 0;
+	    long power = 1;     // x^0
+
+	    while (size > 0) {
+	        if ((size & 1) == 1) {
+	            result = (result + power) % MOD;
+	        }
+	        power = (power * base) % MOD; // 다음 거듭제곱
+	        size >>= 1;
+	    }
+	    return result;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		long value = 0;
+		for (int i = 0; i < N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			x = Integer.parseInt(st.nextToken());
+			K = Integer.parseInt(st.nextToken());
+			value = (value + pow(K)) % MOD;
+		}
+		System.out.println(value);
+	}
+}

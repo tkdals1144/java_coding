@@ -1,0 +1,50 @@
+package divideAndConquer;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class B15319 {
+	static int N;
+	static int x;
+	static int K;
+	static final int MOD = 1000000007;
+	// 0 1 2 3 4 5 6 7 ...
+	// 0
+	// 1
+	// 0 1
+	// 2
+	// 0 2
+	// 1 2
+	// 0 1 2
+	// 3
+	// 음... 이거 2진수 변환인가?
+	// 1 -> 1
+	// 2 -> 01
+	// 3 -> 11
+	// 4 -> 001
+	// 5 -> 101 -> 2^2 + 2^0
+	static long pow(long size) {
+		if (size == 0) return 1;
+		if (size == 1) return x;
+		
+		long half = pow(size / 2);
+		long result = (half * half) % MOD;
+		if (size % 2 == 1) result = (result * x) % MOD;
+		
+		return result;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		long value = 0;
+		for (int i = 0; i < N; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			x = Integer.parseInt(st.nextToken());
+			K = Integer.parseInt(st.nextToken());
+			value = (value + pow(K)) % MOD;
+		}
+		System.out.println(value);
+	}
+}
