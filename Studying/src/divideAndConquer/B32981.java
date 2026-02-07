@@ -1,0 +1,36 @@
+package divideAndConquer;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class B32981 {
+	static final int MOD = 1000000007;
+	static final int num = 5;
+	static long pow(int size) {
+		if (size == 1) {
+			return num;
+		}
+		long half = pow(size/2);
+		long result = (half * half) % MOD;
+		
+		if (size % 2 == 1) {
+			result = (result * num) % MOD;
+		}
+		return result;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		int Q = Integer.parseInt(br.readLine());
+		for (int i = 0; i < Q; i++) {
+			int N = Integer.parseInt(br.readLine());
+			if (N == 1) sb.append(5).append('\n');
+			else {
+				long value = (4 * pow(N-1)) % MOD;
+				sb.append(value).append('\n');
+			}
+		}
+		System.out.println(sb.toString());
+	}
+}
