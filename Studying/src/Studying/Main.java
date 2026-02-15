@@ -11,14 +11,13 @@ class Member {
 		this.memberID = memberID;
 		this.name = name;
 	}
+	public Member() {
+		super();
+	}
 }
 public class Main {
-    static ArrayList<Member> list = new ArrayList<>();
-	public static void main(String[] args) throws IOException {
-    	Member member = new Member("100", "lee");
-    	list.add(member);
-    	Member member1 = list.get(0);
-    	Member member2 = list.get(0);
-    	System.out.println(member1 == member2);
+	public static void main(String[] args) {
+
+		System.out.println("문제의 정답");
     }
 }

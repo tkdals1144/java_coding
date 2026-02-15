@@ -1,0 +1,36 @@
+package greedy;
+import java.io.*;
+import java.util.*;
+public class B1052 {
+	static int N, K;
+	static int min;
+	static void func(int size) {
+		int temp = size;
+		if (size == 1) {
+			while (N > temp) {
+				temp *= 2;
+			}
+			min = temp - N;
+		} else {
+			while (N > temp * 2) {
+				temp *= 2;
+			}
+			N -= temp;
+		}
+		if (size != 1) {
+			func(size-1);
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		if (N <= K) {
+			System.out.println(K-N);
+		} else {
+			func(K);
+		}
+		System.out.println(min);
+	}
+}
