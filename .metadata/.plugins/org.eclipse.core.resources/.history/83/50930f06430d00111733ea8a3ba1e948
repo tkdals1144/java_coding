@@ -1,0 +1,49 @@
+package string;
+import java.util.*;
+import java.io.*;
+public class B5525 {
+	static int N, M;
+	static char[] arr;
+	static int count;
+	static int answer = 0;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		M = Integer.parseInt(br.readLine());
+		arr = br.readLine().toCharArray();
+		// P(n) 을 저장할 공간
+		ArrayList<Integer> list = new ArrayList<>();
+		boolean check = false;
+		for (int i = 0; i < M; i++) {
+			// 현재 I로 시작된 상태라면
+			if (check) {
+				// 이전것과 다르다면 패턴이 이어지고 있음
+				if (arr[i] != arr[i-1]) {
+					count++;
+				} else {
+					// A = 2B + 1
+					// B = (A-1) / 2
+					list.add((count-1) / 2);
+					if (arr[i] == 'I') {
+						count = 1;
+					} else {
+						check = false;
+					}
+				}
+			} else {
+				// 현재 I로 시작되지 않았다면
+				if (arr[i] == 'I') check = true;
+				count = 1;
+			}
+			if (i == M - 1) {
+				list.add((count-1) / 2);
+			}
+		}
+		for (int n : list) {
+			if (n >= N) {
+				answer += (n - N + 1);
+			}
+		}
+		System.out.println(answer);
+	}
+}
