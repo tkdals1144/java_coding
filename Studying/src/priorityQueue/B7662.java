@@ -1,0 +1,85 @@
+package priorityQueue;
+
+import java.io.*;
+import java.util.*;
+
+public class B7662 {
+	static int T;
+	static Queue<Integer> minpq;
+	static Queue<Integer> maxpq;
+	static TreeMap<Integer, Integer> map;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		T = Integer.parseInt(br.readLine());
+		for (int i = 0; i < T; i++) {
+			minpq = new PriorityQueue<>((a, b) -> Integer.compare(a, b));
+			maxpq = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
+			int k = Integer.parseInt(br.readLine());
+			map = new TreeMap<>();
+			for (int j = 0; j < k; j++) {
+				StringTokenizer st = new StringTokenizer(br.readLine());
+				char c = st.nextToken().charAt(0);
+				if (c == 'I') {
+					int num = Integer.parseInt(st.nextToken());
+					minpq.add(num);
+					maxpq.add(num);
+					if (!map.containsKey(num)) {
+						map.put(num, 1);
+					} else {
+						map.put(num, map.get(num) + 1);
+					}
+				} else {
+					int choice = Integer.parseInt(st.nextToken());
+					if (choice == 1) {
+						int pollNum = 0;
+						boolean check = false;
+						while (!maxpq.isEmpty()) {
+							pollNum = maxpq.poll();
+							if (map.get(pollNum) != 0) {
+								check = true;
+								break;
+							}
+						}
+						if (!check) continue;
+						map.put(pollNum, map.get(pollNum) - 1);
+					} else {
+						int pollNum = 0;
+						boolean check = false;
+						while (!minpq.isEmpty()) {
+							pollNum = minpq.poll();
+							if (map.get(pollNum) != 0) {
+								check = true;
+								break;
+							}
+						}
+						if (!check) continue;
+						map.put(pollNum, map.get(pollNum) - 1);
+					}
+				}
+			}
+			while (!maxpq.isEmpty()) {
+				int peekNum = maxpq.peek();
+				if (map.get(peekNum) != 0) break;
+				maxpq.poll();
+			}
+			while (!minpq.isEmpty()) {
+				int peekNum = minpq.peek();
+				if (map.get(peekNum) != 0) break;
+				minpq.poll();
+			}
+			if (!maxpq.isEmpty() && !minpq.isEmpty()) {
+				int max = maxpq.poll();
+				int min = minpq.poll();
+				if (map.get(max) != 0 && map.get(min) != 0) {
+					sb.append(max + " " + min).append('\n');
+				} else {
+					sb.append("EMPTY").append('\n');
+				}
+			} else {
+				sb.append("EMPTY").append('\n');
+			}
+		}
+		System.out.println(sb.toString());
+	}
+}
