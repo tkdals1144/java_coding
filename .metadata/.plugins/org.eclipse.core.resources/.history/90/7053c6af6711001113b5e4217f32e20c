@@ -1,0 +1,81 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+class Node {
+	public int value;
+	public char save;
+	public Node next;
+	public Node(int value) {
+		super();
+		this.value = value;
+		next = null;
+	}
+}
+public class B9019 {
+	static int start;
+	static int end;
+	static Node answer;
+	static void func() {
+		Queue<Node> q = new ArrayDeque<>();
+		Node startNode = new Node(start);
+		q.offer(startNode);
+		while(!q.isEmpty()) {
+			Node node = q.poll();
+			int value = node.value;
+			if (value == end) {
+				answer = node;
+				break;
+			}
+			q.offer(add(node, value));
+			q.offer(minus(node, value));
+			q.offer(left(node, value));
+			q.offer(right(node, value));
+		}
+	}
+	static Node add(Node node, int value) {
+		int temp = (value * 2) % 10000;
+		Node tempNode = new Node(temp);
+		tempNode.save = 'D';
+		tempNode.next = node;
+		return tempNode;
+	}
+	static Node minus(Node node, int value) {
+		int temp = value - 1;
+		if (temp == 0) temp = 9999;
+		Node tempNode = new Node(temp);
+		tempNode.save = 'S';
+		tempNode.next = node;
+		return tempNode;
+	}
+	static Node left(Node node, int value) {
+		int d1 = value / 1000;
+		int d2 = (value % 1000) / 100;
+		int d3 = (value % 100) / 10;
+		int d4 = value % 10;
+		int temp = d2 * 1000 + d3 * 100 + d4 * 10 + d1;
+		Node tempNode = new Node(temp);
+		tempNode.save = 'L';
+		tempNode.next = node;
+		return tempNode;
+	}
+	static Node right(Node node, int value) {
+		int d1 = value / 1000;
+		int d2 = (value % 1000) / 100;
+		int d3 = (value % 100) / 10;
+		int d4 = value % 10;
+		int temp = d4 * 1000 + d1 * 100 + d2 * 10 + d3;
+		Node tempNode = new Node(temp);
+		tempNode.save = 'R';
+		tempNode.next = node;
+		return tempNode;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		for (int i = 0; i < T; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			start = Integer.parseInt(br.readLine());
+			end = Integer.parseInt(br.readLine());
+		}
+	}
+}

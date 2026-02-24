@@ -1,0 +1,113 @@
+package bfs;
+import java.util.*;
+import java.io.*;
+
+public class B9019 {
+	static class Node {
+		public int value;
+		public char save;
+		public Node next;
+		public Node(int value) {
+			super();
+			this.value = value;
+			next = null;
+		}
+	}
+	static int start;
+	static int end;
+	static Node answer;
+	static boolean[] visited;
+	static StringBuilder sb = new StringBuilder();
+	static void func() {
+		visited = new boolean[10000];
+		Queue<Node> q = new ArrayDeque<>();
+		Node startNode = new Node(start);
+		q.offer(startNode);
+		visited[start] = true;
+		while(!q.isEmpty()) {
+			Node node = q.poll();
+			int value = node.value;
+			if (value == end) {
+				answer = node;
+				break;
+			}
+			Node temp = add(node, value);
+			if (!visited[temp.value]) {
+				q.offer(temp);
+				visited[temp.value] = true;
+			}
+			temp = minus(node, value);
+			if (!visited[temp.value]) {
+				q.offer(temp);
+				visited[temp.value] = true;
+			}
+			temp = left(node, value);
+			if (!visited[temp.value]) {
+				q.offer(temp);
+				visited[temp.value] = true;
+			}
+			temp = right(node, value);
+			if (!visited[temp.value]) {
+				q.offer(temp);
+				visited[temp.value] = true;
+			}
+		}
+		ArrayList<Character> arr = new ArrayList<>();
+		while(answer.next != null) {
+			arr.add(answer.save);
+			answer = answer.next;
+		}
+		for (int i = arr.size()-1; 0 <= i; i--) {
+			sb.append(arr.get(i));
+		}
+		sb.append('\n');
+	}
+	static Node add(Node node, int value) {
+		int temp = (value * 2) % 10000;
+		Node tempNode = new Node(temp);
+		tempNode.save = 'D';
+		tempNode.next = node;
+		return tempNode;
+	}
+	static Node minus(Node node, int value) {
+		int temp = value - 1;
+		if (temp == -1) temp = 9999;
+		Node tempNode = new Node(temp);
+		tempNode.save = 'S';
+		tempNode.next = node;
+		return tempNode;
+	}
+	static Node left(Node node, int value) {
+		int d1 = value / 1000;
+		int d2 = (value % 1000) / 100;
+		int d3 = (value % 100) / 10;
+		int d4 = value % 10;
+		int temp = d2 * 1000 + d3 * 100 + d4 * 10 + d1;
+		Node tempNode = new Node(temp);
+		tempNode.save = 'L';
+		tempNode.next = node;
+		return tempNode;
+	}
+	static Node right(Node node, int value) {
+		int d1 = value / 1000;
+		int d2 = (value % 1000) / 100;
+		int d3 = (value % 100) / 10;
+		int d4 = value % 10;
+		int temp = d4 * 1000 + d1 * 100 + d2 * 10 + d3;
+		Node tempNode = new Node(temp);
+		tempNode.save = 'R';
+		tempNode.next = node;
+		return tempNode;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
+		for (int i = 0; i < T; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			start = Integer.parseInt(st.nextToken());
+			end = Integer.parseInt(st.nextToken());
+			func();
+		}
+		System.out.println(sb.toString());
+	}
+}
