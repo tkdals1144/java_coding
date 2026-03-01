@@ -4,8 +4,6 @@ import java.io.*;
 public class B2448 {
 	static int N;
 	// 0 -> 공백, 1 -> 별
-	// 꼭지점으로부터 동일 패턴을 그려내라
-	// 동일 패턴을 반복해서 그려내라
 	static int[][] graph;
 	static void func(int n, int y, int x) {
 		// base n == 3
@@ -18,22 +16,21 @@ public class B2448 {
 			}
 			return;
 		}
-
-		func(n/2, y, x);
-		func(n/2, y + n/2, x - n/2);
-		func(n/2, y + n/2, x + n/2);
+			func(2/n, y, x);
+			func(2/n, y + 2/n, x - 2/n);
+			func(2/n, y + 2/n, x + 2/n);
 		
 	}
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
 		N = Integer.parseInt(br.readLine());
+		System.out.println(N);
 		graph = new int[N][2*N-1];
-		func(N, 0, N-1);
+		func(N, 0, N/2);
 		for (int i = 0; i < graph.length; i++) {
 			for (int j = 0; j < graph[i].length; j++) {
-				if (graph[i][j] == 1) sb.append('*');
-				else sb.append(' ');
+				sb.append(graph[i][j]);
 			}
 			sb.append('\n');
 		}

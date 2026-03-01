@@ -4,8 +4,6 @@ import java.io.*;
 public class B2448 {
 	static int N;
 	// 0 -> 공백, 1 -> 별
-	// 꼭지점으로부터 동일 패턴을 그려내라
-	// 동일 패턴을 반복해서 그려내라
 	static int[][] graph;
 	static void func(int n, int y, int x) {
 		// base n == 3
