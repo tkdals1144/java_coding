@@ -1,0 +1,31 @@
+package dijkstra;
+import java.io.*;
+import java.util.*;
+
+public class B11909 {
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	static int[][] dist;
+	static int[][] graph;
+	static int n;
+	static void func() {
+		
+	}
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		n = Integer.parseInt(br.readLine());
+		dist = new int[n+1][n+1];
+		graph = new int[n+1][n+1];
+		for (int i = 0; i <= n; i++) {
+			Arrays.fill(dist[i], Integer.MAX_VALUE);
+		}
+		dist[1][1] = 0;
+		for (int i = 1; i <= n; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 1; j <= n; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		func();
+	}
+}

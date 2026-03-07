@@ -1,0 +1,72 @@
+package dijkstra;
+import java.io.*;
+import java.util.*;
+
+public class B11909 {
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	static int[][] dist;
+	static int[][] graph;
+	static int n;
+	static class Node {
+		int x;
+		int y;
+		public Node(int x, int y) {
+			super();
+			this.x = x;
+			this.y = y;
+		}
+	}
+	static void func() {
+		Queue<Node> q = new ArrayDeque<>();
+		q.offer(new Node(1, 1));
+		dist[1][1] = 0;
+		while (!q.isEmpty()) {
+			Node now = q.poll();
+			boolean tempcheck = true;
+			int temp = 1;
+			int count = 0;
+			while (tempcheck) {
+				temp = 1;
+				for (int i = 0; i < 4; i++) {
+					int nx = now.x + dx[i];
+					int ny = now.y + dy[i];
+					if (check(nx, ny)) {
+						if (graph[now.y][now.x] >= graph[ny][nx] && dist[ny][nx] == Integer.MAX_VALUE) {
+							dist[ny][nx] = dist[now.y][now.x] + count;
+							q.offer(new Node(nx, ny));
+							temp *= 0;
+						} else if (dist[ny][nx] != Integer.MAX_VALUE) {
+							temp *= 1;
+						} else {
+							temp *= 0;
+						}
+					}
+				}
+				if (temp == 1) break;
+				graph[now.y][now.x]++;
+				count++;
+			}
+		}
+	}
+	static boolean check(int x, int y) {
+		return x >= 1 && y >= 1 && x <= n  && y <= n;
+	}
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		n = Integer.parseInt(br.readLine());
+		dist = new int[n+1][n+1];
+		graph = new int[n+1][n+1];
+		for (int i = 0; i <= n; i++) {
+			Arrays.fill(dist[i], Integer.MAX_VALUE);
+		}
+		for (int i = 1; i <= n; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int j = 1; j <= n; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		func();
+		System.out.println(dist[n][n]);
+	}
+}
