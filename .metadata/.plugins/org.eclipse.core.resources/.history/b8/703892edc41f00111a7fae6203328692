@@ -1,0 +1,47 @@
+package dijkstra;
+import java.util.*;
+import java.io.*;
+public class B1504 {
+	static final long INF = Long.MAX_VALUE;
+	static class Node {
+		int to;
+		long cost;
+		public Node(int to, long cost) {
+			super();
+			this.to = to;
+			this.cost = cost;
+		}
+	}
+	// 정점 N, 간선 M
+	static int N, M;
+	static int u, v;
+	static ArrayList<Node>[] arr;
+	static long[] dist;
+	static void func() {
+		
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		arr = new ArrayList[N+1];
+		dist = new long[N+1];
+		for (int i = 1; i <= N; i++) {
+			arr[i] = new ArrayList<>();
+		}
+		Arrays.fill(dist, Integer.MAX_VALUE);
+		for (int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int start = Integer.parseInt(st.nextToken());
+			int end = Integer.parseInt(st.nextToken());
+			long cost = Long.parseLong(st.nextToken());
+			arr[start].add(new Node(end, cost));
+			arr[end].add(new Node(start, cost));
+		}
+		st = new StringTokenizer(br.readLine());
+		u = Integer.parseInt(st.nextToken());
+		v = Integer.parseInt(st.nextToken());
+		func();
+	}
+}
