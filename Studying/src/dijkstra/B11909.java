@@ -30,19 +30,19 @@ public class B11909 {
         PriorityQueue<Node> pq = new PriorityQueue<>();
         pq.offer(new Node(1,1,0));
         dist[1][1] = 0;
-
+        
         while(!pq.isEmpty()){
 
             Node now = pq.poll();
-
+         
             if(now.cost > dist[now.y][now.x]) continue;
 
-            for(int i=0;i<2;i++){
+            for(int i = 0; i < 2; i++){
 
                 int nx = now.x + dx[i];
                 int ny = now.y + dy[i];
 
-                if(nx<1 || ny<1 || nx>n || ny>n) continue;
+                if(nx < 1 || ny < 1 || nx > n || ny > n) continue;
 
                 int cost = Math.max(0, graph[ny][nx] - graph[now.y][now.x] + 1);
 

@@ -1,0 +1,61 @@
+package dijkstra;
+import java.io.*;
+import java.util.*;
+
+public class B1916 {
+	static class Node {
+		int to;
+		int cost;
+		public Node(int to, int cost) {
+			super();
+			this.to = to;
+			this.cost = cost;
+		}
+	}
+	static int N, M;
+	static ArrayList<Node>[] arr;
+	static void reset() {
+		arr = new ArrayList[N+1];
+		for (int i = 1; i <= N; i++) {
+			arr[i] = new ArrayList<>();
+		}
+	}
+	static int[] dijkstra(int start) {
+		int[] dist = new int[N+1];
+		Arrays.fill(dist, Integer.MAX_VALUE);
+		PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> {
+			return a.cost - b.cost;
+		});
+		pq.offer(new Node(start, 0));
+		dist[start] = 0;
+		while (!pq.isEmpty()) {
+			Node now = pq.poll();
+			if (now.cost > dist[now.to]) continue;
+			for (Node next : arr[now.to]) {
+				if (dist[next.to] > now.cost + next.cost) {
+					dist[next.to] = now.cost + next.cost;
+					pq.offer(new Node(next.to, dist[next.to]));
+				}
+			}
+		}
+		return dist;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		M = Integer.parseInt(br.readLine());
+		reset();
+		for (int i = 0; i < M; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int start = Integer.parseInt(st.nextToken());
+			int end = Integer.parseInt(st.nextToken());
+			int cost = Integer.parseInt(st.nextToken());
+			arr[start].add(new Node(end, cost));
+		}
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int start = Integer.parseInt(st.nextToken());
+		int end = Integer.parseInt(st.nextToken());
+		int[] dist = dijkstra(start);
+		System.out.println(dist[end]);
+	}
+}
