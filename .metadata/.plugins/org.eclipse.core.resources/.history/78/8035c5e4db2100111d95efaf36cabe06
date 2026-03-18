@@ -1,0 +1,45 @@
+package dijkstra;
+import java.io.*;
+import java.util.*;
+public class B1261 {
+	static class Node {
+		int x, y;
+		int cost;
+		public Node(int x, int y, int cost) {
+			super();
+			this.x = x;
+			this.y = y;
+			this.cost = cost;
+		}
+	}
+	// 가로 : M, 세로 : N
+	static int M, N;
+	static int[][] graph;
+	static int[][] dist;
+	static void reset() {
+		graph = new int[N+1][M+1];
+		dist = new int[N+1][M+1];
+		for (int i = 1; i < dist.length; i++) {
+			Arrays.fill(dist[i], Integer.MAX_VALUE);
+		}
+	}
+	static void dijkstra() {
+		
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		M = Integer.parseInt(st.nextToken());
+		N = Integer.parseInt(st.nextToken());
+		reset();
+		for (int i = 0; i < N; i++) {
+			char[] input = br.readLine().toCharArray();
+			for (int j = 0; j < M; j++) {
+				if (input[j] == '0') graph[i][j] = 0;
+				else graph[i][j] = 1;
+			}
+		}
+		dijkstra();
+		System.out.println(dist[N][M]);
+	}
+}
