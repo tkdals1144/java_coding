@@ -1,0 +1,28 @@
+package greedy;
+import java.util.*;
+import java.io.*;
+public class B7983 {
+	static int n; // 과제의 개수
+	static ArrayList<Integer[]> arr = new ArrayList<>();
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		n = Integer.parseInt(br.readLine());
+		for (int i = 0; i < n; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int d = Integer.parseInt(st.nextToken());
+			int t = Integer.parseInt(st.nextToken());
+			arr.add(new Integer[] {t, d});
+		}
+		Collections.sort(arr, (a, b) -> {
+			return b[0] - a[0];
+		});
+		// 초기값 설정
+		int start = arr.get(0)[0] - arr.get(0)[1];
+		for (int i = 1; i < n; i++) {
+			int end = arr.get(i)[0]; // 마감일
+			int work = arr.get(i)[1]; // 작업일
+			start = Math.min(start, end) - work;
+		}
+		System.out.println(start);
+	}
+}
