@@ -1,0 +1,63 @@
+package greedy;
+import java.io.*;
+import java.util.*;
+
+public class B30827 {
+	// 전체 회의 N, 회의실 수 K
+	static int N, K;
+	// [[start, end], [start, end]]
+	static int[][] meeting;
+	static int count = 0;
+	static Integer[] temp;
+	static int idx = 0;
+	static void greedy() {
+	    TreeMap<Integer, Integer> map = new TreeMap<>();
+
+	    // 초기 방 K개 (모두 종료시간 0)
+	    map.put(0, K);
+
+	    for (int i = 0; i < N; i++) {
+	        int start = meeting[i][0];
+	        int end = meeting[i][1];
+
+	        Integer key = map.floorKey(start);
+
+	        if (key != null) {
+	            // 기존 방 하나 사용
+	            if (map.get(key) == 1) map.remove(key);
+	            else map.put(key, map.get(key) - 1);
+
+	            // 새 종료시간 추가
+	            map.put(end, map.getOrDefault(end, 0) + 1);
+
+	            count++;
+	        }
+	    }
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		meeting = new int[N][2];
+		temp = new Integer[K];
+		for (int i = 0; i < temp.length; i++) {
+			temp[i] = 0;
+		}
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			int s = Integer.parseInt(st.nextToken());
+			int e = Integer.parseInt(st.nextToken());
+			meeting[i][0] = s;
+			meeting[i][1] = e;
+		}
+		Arrays.sort(meeting, new Comparator<int[]>() {
+			@Override
+			public int compare(int[] o1, int[] o2) {
+				return o1[1] - o2[1];
+			}
+		});
+		greedy();
+		System.out.println(count);
+	}
+}
