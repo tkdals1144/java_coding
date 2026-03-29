@@ -1,0 +1,17 @@
+package greedy;
+import java.io.*;
+import java.util.*;
+public class B23797 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		char[] input = br.readLine().toCharArray();
+		int count = 1;
+		char prev = input[0];
+		for (int i = 1; i < input.length; i++) {
+			if (input[i] != prev) {
+				count++;
+			}
+		}
+		System.out.println(count);
+	}
+}
