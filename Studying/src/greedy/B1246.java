@@ -1,0 +1,25 @@
+package greedy;
+import java.io.*;
+import java.util.*;
+public class B1246 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+		Integer[] person = new Integer[M];
+		for (int i = 0; i < M; i++) {
+			person[i] = Integer.parseInt(br.readLine());
+		}
+		Arrays.sort(person, (a, b) -> b - a);
+		int max = 0;
+		int price = 0;
+		for (int i = 1; i <= N && i <= M; i++) {
+			if (max < person[i-1] * i) {
+				max = person[i-1] * i;
+				price = person[i-1];
+			}
+		}
+		System.out.println(price + " " + max);
+	}
+}
