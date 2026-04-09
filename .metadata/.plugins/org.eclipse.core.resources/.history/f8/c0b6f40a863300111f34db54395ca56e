@@ -1,0 +1,70 @@
+package dijkstra;
+import java.io.*;
+import java.util.*;
+public class B13219 {
+	static class Node {
+		int x, y;
+		int cost;
+		public Node(int x, int y, int cost) {
+			super();
+			this.x = x;
+			this.y = y;
+			this.cost = cost;
+		}
+	}
+	static final int INF = Integer.MAX_VALUE;
+	static int N;
+	static int x1, y1, x2, y2;
+	static int[][] graph;
+	static int[][] dist;
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	static void reset() {
+		graph = new int[N][N];
+		dist = new int[N][N];
+		for (int i = 0; i < N; i++) {
+			Arrays.fill(dist[i], INF);
+		}
+	}
+	static void dijkstra() {
+		dist[y1][x1] = graph[y1][x1];
+		System.out.println(dist[y1][x1]);
+		PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> a.cost - b.cost);
+		pq.offer(new Node(y1, x1, dist[y1][x1]));
+		while (!pq.isEmpty()) {
+			Node now = pq.poll();
+			if (now.cost > dist[now.y][now.x]) continue;
+			for (int i = 0; i < 4; i++) {
+				int nx = now.x + dx[i];
+				int ny = now.y + dy[i];
+				if (check(nx, ny)) {
+					if (dist[ny][nx] > dist[now.y][now.x] + graph[ny][nx]) {
+						dist[ny][nx] = dist[now.y][now.x] + graph[ny][nx];
+						pq.offer(new Node(nx, ny, dist[ny][nx]));
+					}
+				}
+			}
+		}
+	}
+	static boolean check(int x, int y) {
+		return x >= 0 && y >= 0 && x < N && y < N && graph[y][x] != -1;
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		reset();
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		x1 = Integer.parseInt(st.nextToken());
+		y1 = Integer.parseInt(st.nextToken());
+		x2 = Integer.parseInt(st.nextToken());
+		y2 = Integer.parseInt(st.nextToken());
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < N; j++) {
+				graph[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		dijkstra();
+		System.out.println(dist[y2][x2]);
+	}
+}
