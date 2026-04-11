@@ -1,0 +1,66 @@
+package bellmanFord;
+import java.io.*;
+import java.util.*;
+public class B11657 {
+	static final long INF = Long.MAX_VALUE / 4;
+	static class Edge {
+		int from;
+		int to;
+		long cost;
+		public Edge(int from, int to, long cost) {
+			super();
+			this.from = from;
+			this.to = to;
+			this.cost = cost;
+		}
+	}
+	static int N, M;
+	static long[] dist;
+	static ArrayList<Edge> arr;
+	static StringBuilder sb = new StringBuilder();
+	static void reset() {
+		dist = new long[N+1];
+		Arrays.fill(dist, INF);
+		arr = new ArrayList<>();
+	}
+	static void bellmanFord() {
+		// 초기화 설정
+		dist[1] = 0;
+		for (int i = 1; i <= N; i++) {
+			boolean updated = false;
+			for (Edge e : arr) {
+				// 아직 탐색 전이면 다음 탐색을 제지함
+				if (dist[e.from] == INF) continue;
+				if (dist[e.to] > dist[e.from] + e.cost) {
+					dist[e.to] = dist[e.from] + e.cost;
+					updated = true;
+					if (i == N) {
+						sb.append("-1");
+						return;
+					}
+				}
+			}
+			if (!updated) break;
+		}
+		for (int i = 2; i <= N; i++) {
+			if (dist[i] == INF) sb.append("-1").append('\n');
+			else sb.append(dist[i]).append('\n');
+		}
+	}
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		reset();
+		for (int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int from = Integer.parseInt(st.nextToken());
+			int to = Integer.parseInt(st.nextToken());
+			long cost = Long.parseLong(st.nextToken());
+			arr.add(new Edge(from, to, cost));
+		}
+		bellmanFord();
+		System.out.println(sb.toString());
+	}
+}
