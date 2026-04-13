@@ -30,7 +30,7 @@ public class B6002 {
 		Arrays.fill(dist, INF);
 	}
 	static void bellmanFord() {
-		dist[S] = D;
+		dist[S] = 100;
 		for (int i = 1; i <= C; i++) {
 			boolean updated = false;
 			for (Edge e : arr) {

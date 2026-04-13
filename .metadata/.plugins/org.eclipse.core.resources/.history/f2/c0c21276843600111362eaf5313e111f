@@ -3,7 +3,6 @@ import java.io.*;
 import java.util.*;
 public class B6002 {
 	static final long INF = Long.MIN_VALUE / 4;
-	static boolean check = false;
 	static long max = 0;
 	static class Edge {
 		int from;
@@ -30,7 +29,7 @@ public class B6002 {
 		Arrays.fill(dist, INF);
 	}
 	static void bellmanFord() {
-		dist[S] = D;
+		dist[S] = 100;
 		for (int i = 1; i <= C; i++) {
 			boolean updated = false;
 			for (Edge e : arr) {
@@ -41,7 +40,6 @@ public class B6002 {
 					updated = true;
 					if (i == C) {
 						System.out.println(-1);
-						check = true;
 						return;
 					}
 				}
@@ -69,16 +67,16 @@ public class B6002 {
 			st = new StringTokenizer(br.readLine());
 			int from = Integer.parseInt(st.nextToken());
 			int to = Integer.parseInt(st.nextToken());
-			long cost = Long.parseLong(st.nextToken()) * -1 + D;
+			long cost = Long.parseLong(st.nextToken()) * -1 + 100;
 			arr.add(new Edge(from, to, cost));
 		}
 		bellmanFord();
-		if (check) return;
 	    long max = 0;
 	    for (int i = 1; i <= C; i++) {
+
 	        max = Math.max(max, dist[i]);
 	    }
-	    
+
 	    System.out.println(max);
 	}
 }

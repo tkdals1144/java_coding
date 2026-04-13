@@ -1,0 +1,17 @@
+package greedy;
+import java.io.*;
+import java.util.*;
+public class B5585 {
+	static final int[] money = {500, 100, 50, 10, 5, 1};
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = 1000 - Integer.parseInt(br.readLine());
+		int count = 0;
+		for (int i = 0; i < money.length; i++) {
+			int temp = N / money[i];
+			count += temp;
+			N -= temp * money[i];
+		}
+		System.out.println(count);
+	}
+}
