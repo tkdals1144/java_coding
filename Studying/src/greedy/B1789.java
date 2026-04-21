@@ -1,0 +1,15 @@
+package greedy;
+import java.io.*;
+public class B1789 {
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		long S = Long.parseLong(br.readLine());
+		int i = 1;
+		long sum = 0;
+		while (S >= sum) {
+			sum += i;
+			i++;
+		}
+		System.out.println(i-2);
+	}
+}

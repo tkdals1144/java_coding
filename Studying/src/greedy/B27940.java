@@ -1,0 +1,30 @@
+package greedy;
+import java.io.*;
+import java.util.*;
+public class B27940 {
+	// N : 층수, M : 비 횟수, K : 버틸 수 있는 양
+	static int N, M;
+	static long K;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		K = Long.parseLong(st.nextToken());
+		long count = 0;
+		int day = 0;
+		boolean isSafe = true;
+		for (int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int t = Integer.parseInt(st.nextToken());
+			long r = Long.parseLong(st.nextToken());
+			count += r;
+			if (isSafe && count > K) {
+				isSafe = false;
+				day = i + 1;
+			}
+		}
+		if (isSafe) System.out.println(-1);
+		else System.out.println(day + " " + 1);
+	}
+}
