@@ -12,7 +12,7 @@ public class B12908 {
 	}
 	static int xs, ys, xe, ye;
 	static Node[] nodes = new Node[8];
-	static long[][] dist = new long[8][8];
+	static int[][] dist = new int[8][8];
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
